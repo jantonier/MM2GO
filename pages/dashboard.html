@@ -1,13 +1,261 @@
 <html>
     <head>
         <title>Dashboard</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+        <link rel = "stylesheet" href = "../css/dashboard.css">
+        
+        <meta charset="utf-8">
     </head>
     <body>
-        <div id = "side-bar">
-            <h1>Sidebar</h1>
+
+
+        <div class="modal_location">
+        
+            <div class="modal-box" >
+            
+                <div class="close-modal" >X</div>
+                <h1>Escriba abajo</h1>
+
+                <div class="item-clicked" ></div>
+
+
+                <textarea class="edited-item" ></textarea>
+
+                <p>Al terminar oprima submit</p>
+                <button class="edit-submit" >Submit</button>
+            
+            </div>
+
         </div>
-        <div id = "dynamic-container">
-            <h1>Dynamic Container</h1>
+
+
+        
+        <div id = "dashboard-sidebar" class = "sidebar">
+            <a href = "../index.html"><img src = "../img/mm2go.png" id = "logo"></a>
+            <br>
+            <ul class="dashboard-ul" >
+                <li class="active" ><a  href="#" ><i class='fas fa-edit'>&nbsp;</i> Editaje de Menu </a></li>
+                <li><a href="#" ><i class='far fa-list-alt'>&nbsp;</i> Ver Órdenes</a></li>
+                <li><a href="#" ><i class='fas fa-chart-bar'>&nbsp;</i> Reportes</a></li>
+                <li><a href="#" ><i class='far fa-envelope'>&nbsp;</i> Enviar Email</a></li>
+                <li><a href="#" ><i class='fas fa-users'>&nbsp;</i> Administradores</a></li>
+           </ul>  
+
+           <button onclick = "logout()" class="logout-button" >Logout</button>
         </div>
+      
+        <!-- Menu Editing-->
+        <div class = "dynamic-container editaje-de-menu">
+            <h1 class="title">Editaje de Menu</h1>
+
+
+
+            <div class = "menu-editing-container">
+                <div id = "menu-editing">
+                    <label for="station">Estación</label>
+                        <select id="station" v-model="selectedStation" @change="onChangeStation($event)">
+                            <option v-for = "station in stations" :key="station">{{ station }}</option>
+                        </select>
+                    <input id="combo-radio" @change="onChangeRadio($event)" type = "radio" value ="Combo" name = "method" checked>
+                    <label for="combo">Combo</label>
+                    <input id="item-radio"  @change="onChangeRadio($event)" type = "radio" value = "Item" name = "method">
+                    <label for="item">Item</label>
+                </div>
+            </div>
+            <div id = "menu-container"></div>
+        </div>
+
+        <!-- View Orders -->
+        <div class = "dynamic-container ver-ordenes">
+            <h1>Ver Ordenes</h1>
+            <div class = "orders-container" style = "overflow-x: auto;">
+                <div id = "orders">
+                    <table v-for= "building in buildings" >    
+                        <tr>
+                            <th colspan = "2">{{ building }}</th>
+                        </tr>
+                        <tr>
+                            <th>Cash</th>
+                            <th>ATH Móvil</th>
+                        </tr>
+                        <tr v-for = "order in orders">
+                            <td v-if = "order.location === building && order.payment_method === 'Cash'">{{order}}</td>
+                            <td v-if = "order.location === building && order.payment_method === 'ATH Móvil'">{{order}}</td>
+                        </tr>
+                    </table>
+                    
+                </div>
+    
+            </div>
+        </div>
+
+        <!-- Report Generation-->
+        <!-- Report Generation-->
+        <div class = "dynamic-container reportes">
+            <h1>Reportes</h1>
+
+            <!-- Choose Report Type-->
+            <div class="tabs-container" >
+                <div class="w3-bar w3-black">
+                     <button class="w3-bar-item w3-button" onclick="openTab('report')">Reporte</button>
+                     <button class="w3-bar-item w3-button" onclick="openTab('graph')">Gráfico</button>
+                </div>
+              
+                <div id="report" class="w3-container tabs">
+                        <table>
+                            <tr>
+                                <td>Fecha</td>
+                                <td>Número de Órdenes</td>
+                                <td>Total</td>
+                            </tr>
+                            <tr v-for = "data in written_report_data">
+                                <td>{{data.date.getMonth()}}/{{data.date.getDate()}}/{{data.date.getFullYear()}}</td>
+                                <td>{{data.numOfOrders}}</td>
+                                <td>${{data.total.toFixed(2)}}</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>Total Generado</td>
+                                <td>{{totalEarnings}} </td>
+                            </tr>
+                        </table>
+                        <!-- </div> -->
+                    </div>
+              
+                <div id="graph" class="w3-container tabs" style="display:none">
+                <canvas id="salesChart"></canvas>
+                    <script>
+                    var ctx = document.getElementById('salesChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
+                            most_sold: ["Carne", "Pollo", "Pescado", "Pizza", "Arroz"],
+                            datasets: [{
+                                label: 'Número de Ventas',
+                                data: [12, 24, 3, 5, 2, 3],
+                                backgroundColor: [
+                                'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)',
+                                    'rgba(255, 159, 64, 1)'
+                                ],
+                            }],
+                        },
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    scaleLabel: {
+                                    display: true,
+                                    labelString: 'Ventas',
+                                    fontColor: 'white',
+                                    fontSize: 14,
+                                    
+                                },
+                                gridLines: {
+                                    display: false 
+                                }
+                            }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        stepSize: 1,
+                                        fontColor: "white"
+
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: " Número de Ventas",
+                                        fontColor: "white",
+                                        fontSize: 14
+                                    }
+                                }],
+                                legend :{
+                                    labels :{
+                                        fontColor: 'white',
+                                        fontSize: 14
+                                    }
+                                }
+                            },
+                            tooltips: {
+                                label: {
+                                                fontColor: 'white',
+                                                fontSize: 14
+                                            },
+                                callbacks: {
+                                    label: function(tooltipItem, data){
+                                        return ["Total de ventas: " + tooltipItem.yLabel,
+                                                "Combo más vendido: " + data.most_sold[tooltipItem.index]]
+                                    }
+                                }
+                            },
+                            legend: {
+                                labels: {
+                                    fontColor: 'white',
+                                    fontSize: 14
+                                }
+                            },
+                        
+                        }
+                    });
+                    </script>
+            </div>
+        </div>
+
+    </div>
+
+        <!--Email Service -->
+        <div class = "dynamic-container enviar-email">
+            <h1>Enviar Email</h1>
+            <div id = "email">
+                <form>
+                    <ul>
+                        <li><input type = "text" placeholder = "Subject"></li>
+                        <li><input class="email-content" type = "text" placeholder = "Email Content"></li>
+                    </ul>
+                    <button v-on:click="sendEmail">Enviar Email</button>
+                </form>
+            </div>
+        </div>
+
+        <!--Adminstration-->
+        <div class = "dynamic-container administradores">
+            <h1>Administradores</h1>
+            <div id = "admin">
+                <ul>
+                    <li v-for = "admin in admins">{{admin.first_name}} {{admin.last_name}} - {{admin.role}}</li>
+                    <button v-on:click="removeAdministrator">Remover Administrador</button>
+                </ul>
+                <button class="add_Admin" v-on:click="addAdministrator">Añadir Administrador</button>
+            
+            </div>
+        </div>
+
+
+
+
+        <script>
+           function openTab(tab) {
+                var tabs = document.getElementsByClassName("tabs");
+                for (var i = 0; i < tabs.length; i++) {
+                    tabs[i].style.display = "none";  
+                }
+                document.getElementById(tab).style.display = "block";  
+            }
+            </script>
+
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src = "../js/dashboard.js"></script>
     </body>
 </html>

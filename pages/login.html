@@ -1,13 +1,27 @@
 <html>
     <head>
-        <title>MM2G0 Dashboard Login</title>
+        <title>Login</title>
         <meta charset="UTF-8"> 
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link href = "../css/login.css" rel = "stylesheet">
     </head>
-    <body>
-        <h1>Login</h1>
-        <div id = "login">
-            <input type= "text" placeholder = "E-mail">
-            <input type = "password" placeholder = "Contraseña">
-        </div>
+    <div id ="full-page">
+        <header>
+            <img src="../img/mm2go.png" alt="logo">
+        </header>
+        <body>
+            <div class = "login-container">   
+                <div id = "login" class = "login-inner-container">
+                    <h1 class = "container-title">Login</h1>
+                    <ul>
+                        <p id = "error"></p>
+                        <li><input type= "text" placeholder = "Email" id = "email"></li>
+                        <li><input type = "password" placeholder = "Contraseña" id = "password"></li>
+                        <button v-on:click = "validateLogin">Login</button>
+                    </ul>
+                </div>
+            </div>
+    </div>
+    <script src = "../js/login.js"></script>
     </body>
 </html>

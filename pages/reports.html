@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <title>
+            Reports
+        </title>
+        <meta charset="utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+        <link href="../css/dashboard.css" rel = "stylesheet">
+    </head>
+    <body>
+        <canvas id="salesChart"></canvas>
+<script>
+var ctx = document.getElementById('salesChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
+        most_sold: ["Carne", "Pollo", "Pescado", "Pizza", "Arroz"],
+        datasets: [{
+            label: 'Número de Ventas',
+            data: [12, 24, 3, 5, 2, 3],
+            backgroundColor: [
+            'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+        }],
+    },
+    options: {
+        scales: {
+            xAxes: [{
+                scaleLabel: {
+                display: true,
+                labelString: 'Ventas',
+                fontColor: 'white',
+                fontSize: 14,
+                
+            },
+            gridLines: {
+                display: false 
+            }
+        }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 1,
+                    fontColor: "white"
+
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: " Número de Ventas",
+                    fontColor: "white",
+                    fontSize: 14
+                }
+            }],
+            legend :{
+                labels :{
+                    fontColor: 'white',
+                    fontSize: 14
+                }
+            }
+        },
+        tooltips: {
+            label: {
+                            fontColor: 'white',
+                            fontSize: 14
+                        },
+            callbacks: {
+                label: function(tooltipItem, data){
+                    return ["Total de ventas: " + tooltipItem.yLabel,
+                            "Combo más vendido: " + data.most_sold[tooltipItem.index]]
+                }
+            }
+        },
+        legend: {
+            labels: {
+                fontColor: 'white',
+                fontSize: 14
+            }
+        },
+    
+    }
+});
+</script>
+    </body>
+</html>

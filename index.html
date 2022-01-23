@@ -1,26 +1,76 @@
-<!--Main page for MM2Go-->
+<!--Home page for MM2GO-->
 <html>
 <head>
     <title>MM2GO</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+     <!--Vue dependency-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <href link = "./css/home.css" rel = "stylesheet"></href>
+    <!-- Bootstrap Vue dependencies-->
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+    <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+    <link href = "css/home.css" rel = "stylesheet">
+    
+
+    <!-- Fade In Logos-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".rg-logo").hide().fadeIn(2500);
+            $(".mm2go-logo").hide().fadeIn(2500);
+            $(".mm").hide().fadeIn(1000);
+        });
+    </script>
 </head>
+
 <body>
-    <header> 
-        <button id = "dashboard-ref"><a href = "pages/login.html">Dashboard</a></button>
+    <header id = "header">
+         <b-navbar variant = "light">
+            <img src = "img/rg-food.png" class = "rg-logo">
+            <h1 class = "mm">Mama Mia</h1>
+            <!-- <img src = "img/mm2go.png" class = "mm2go-logo"> -->
+            <b-button pill id = "dashboard-button">Dashboard</b-button>
+        </b-navbar>
     </header>
-<div id = "menu-container"> 
-    <h1>Menu Container</h1>
+    <br><br>
+    
+<div id = "body-container">
+    <div class = "combo-container"> 
+    <h1>Combos del Día</h1>
     <div id = "menu-list">
-        <ul>
-            <li v-for = "combo in combos" :key = "combo.name">
-              {{ combo.name }} - ${{ combo.price }}
-            </li>
-        </ul>
+        <b-table hover head-variant = "light"  :items="items"></b-table>
     </div>
+    </div>
+    <b-button pill id = "order-button"><a href = "pages/ordering-system.html">Ordena Ahora</a></b-button>
+
+    <div class = "subscribe-container">
+    <p>¿Desea recibir un email cuando se actualicen los combos del día?</p>
+    
+    <b-form class = "form">
+        <b-form-group id = "name" label = "Nombre:" label-for = "name">
+            <b-form-input id = "" placeholder = "Nombre"></b-form-input>
+        </b-form-group>
+        <b-form-group id = "last_name"  label = "Apellido:" label-for = "last_name">
+            <b-form-input id = "" placeholder = "Apellido"></b-form-input>
+        </b-form-group>
+        <b-form-group id = "email"  label = "Email:" label-for = "email">
+            <b-form-input id = "" placeholder = "Email"></b-form-input>
+        </b-form-group>
+    </b-form>
 </div>
-<button id = "ordering-ref"><a href = "pages/ordering-system.html">Ordena Ahora</a></button>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 <script src="js/home.js"></script>
+
 </body>
 
 </html>

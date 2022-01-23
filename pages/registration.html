@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Registración</title>
+        <meta charset = "utf-8">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link href = "../css/registration.css" rel = "stylesheet"></href>
+    </head>
+
+    <div id="full-page">
+    <header>
+        <img src="../img/mm2go.png" alt="logo">
+    </header>
+    <body>
+        <div id = "register" class = 'registration-container'>
+            <div class="registration-inner-container" >
+            <h1 class="container-title" >Registrar</h1>
+            <div class="divider" ></div>
+            <ul >
+            <p id = "error"><strong></strong></p>
+            <li><input type = "text" placeholder = "Nombre" id = "name"></li>
+            <li><input type = "text" placeholder = "Apellido" id = "last-name"></li>
+            <li><input type = "text" placeholder = "Email" id = "email"></li>
+            <li><input type = "password" placeholder = "Contraseña" id = "password"></li>
+            <li><input type = "password" placeholder = "Confirmar Contraseña" id = "confirm-password"></li>
+             <button v-on:click = "validateRegistration">Regístrate</button>   
+        </ul>
+        </div>
+        </div>
+        <script src = "../js/registration.js"></script>
+    </body>
+</div>
+</html>

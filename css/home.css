@@ -1,3 +1,117 @@
-.dashboard-ref{
-    color: blue;
+body{
+    background-color: #41b3a3;
+    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-dark.png");
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+    font-family: 'Montserrat';
+    font-size: 18px;
+    margin:0;
+}
+
+p{
+  color: white;
+}
+
+.form{
+  color: white;
+}
+
+.mm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bolder;
+    letter-spacing: 20px;
+    font-size: 36px;
+}
+
+.logo-container{
+    position: absolute;
+    background-color: white;
+    width: auto;
+    margin: 0;
+    height: 100px;
+
+}
+
+
+.rg-logo{
+    position: relative;
+    width: 15%;
+    margin-left: 5%;
+    margin-right: 17%;
+    transform: translate(0, -10%);
+}
+
+.mm2go-logo{
+    position: relative;
+    width: 10%;
+
+}
+
+
+.combo-container{
+    float: left;
+    margin-left: 5%;
+    width: 40%;
+    background-color: #0c3a33;
+    font-weight: bolder;
+    border-radius: 5px;
+}
+
+.combo-container h1{
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    padding: 10px;
+}
+
+.combo-container td{
+    color: white;
+}
+
+.combo-container tr:hover td{
+    background-color: #051b18;
+}
+
+#order-button{
+    float: left;
+    position: absolute;
+    left: 18%;
+    background-color: white;
+    font-size: 22px;
+    margin-top: 22%;
+    filter: drop-shadow(0 5px 10px #042c27);
+}
+
+#order-button a{
+    color:  #0c3a33;
+}
+
+.subscribe-container{
+    position: relative;
+    border-radius: 5px;
+    background-color:  #0c3a33;
+    width: 40%;
+    margin-right: 5%;
+    float: right;
+}
+
+#dashboard-button{
+    position: relative;
+    font-size: 22px;
+    background-color: #0c3a33;
+    color: #f8f9fa;
+    filter: drop-shadow(0px 5px 5px #042c27);
+    margin-left: 25%;
+    margin-right: 5%;
+}
+
+#dashboard-button:hover{
+    background-color: #051b18;
+    color: #f8f9fa;
+
 }

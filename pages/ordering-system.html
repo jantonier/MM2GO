@@ -1,9 +1,271 @@
 <html>
     <head>
         <title>Mama Mia - Ordena</title>
+        
+          <!--Permite acentos en el HTML-->
+          <meta charset="UTF-8"/>
+ <!--++++++++++++++++++++++++++++++Style Sheets++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--> 
+      
+        <link type="text/css"  rel="stylesheet"  href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+        <link type="text/css"  rel="stylesheet"  href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css" />
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel = "stylesheet"   href="../css/ordersystem.css" >
+       
     </head>
+
     <body>
-        <button><a href = ../index.html>Página Principal</a></button>
-        <h1>Ordena!</h1>
+     
+      <div style="width:100%; height:120px; background-color:black; opacity:0.5 ;z-index: -3"></div>
+      
+ <ul id="menu-list"> 
+
+
+ <!--++++++++++++++++++++++++++++++MEGA CAJA++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->     
+<div id="pantallaOrdenes">
+      <div class= "pagPrincipalContainer"> 
+            <div id= "apagarPagina_Principal">
+       
+             
+             <b-button  pill variant="success" href="../index.html" class="greenButton ">
+             <b-icon icon="house" aria-hidden="true"></b-icon> Página Principal
+              </b-button>
+             
+           </div>
+
+      </div>
+
+                <h2 id="titulo" class="posTituloContainer" style="font-size:36px;top:50px ;left:400px">Estación Criolla </h2>
+               <h2 id="tOferta" class="posTituloContainer" style="font-size:36px;top:50px ;left:1000px">  Combo</h2>      
+ 
+     
+<!--++++++++++Cajas Estación y Combo/Individual+++++++++++++++++++++++++++++++-->      
+        <div id= "apagar_Estacion">
+                <div>
+                <b-dropdown id="dropdown-1"  text ="Elige una estación" class=" m-2 dCaja1">
+                    
+                        <div v-for ="estacion in Stations" :key="estacion.station_name">
+                                <template v-if= "estacion.is_active=='1'">                                  
+                                  <b-dropdown-item   v-on:click=" borrarCheckBoxes();checkStation(estacion.station_name,estacion.station_id )"
+                                   v-bind:id= "estacion.station_id" name="chEstacion" class="choose" >  
+                                 
+                                        {{estacion.station_name}}</b-dropdown-item>                    
+                               </template> 
+                        </div>                              
+                </b-dropdown>                               
+                </div>
+        </div>
+         <div id= "apagar_Oferta">
+                <div>
+               <b-dropdown id="dropdown-2"  text ="combo/individual" class=" m-2 dCaja2">
+                         <b-dropdown-item v-on:click="activarCombo()"  > Combo  </b-dropdown-item>
+                         <b-dropdown-item v-on:click="activarIndividual()" > Individual  </b-dropdown-item>     
+              </b-dropdown>  
+              </div>                
+         </div> 
+
+<div id="ItemsContainer" class="hideContainer">
+<div class="posFondoClaro" style="top: 200px;left: 40px;width:1010px; height:500px;border:1px solid; background-color:white; opacity:0.5;z-index: -3"></div>
+<div class="whiteBoxContainer" style="top: 225px;left:70px;width:950px; height:450px;border:1px solid; background-color:white;;z-index: -2"></div>
+
+
+
+<h2 id="itemDesc" class="posContainerDesc" >Estan disponible las siguientes opciones :</h2>
+           <b-list-group class="list1">
+               <div v-for="c1 in Item" :key="c1.name" >
+                                                      
+               <template v-if= "c1.station_id ==stationIdentifier[0]">                
+                <b-list-group-item> <input type="checkbox"  name="chIndividual" v-bind:id= "c1.item_id">
+                {{ c1.name }} -  ${{c1.item_price}}<br>  </b-list-group-item>               
+                </template>
+               </div> 
+               </b-list-group>
+   
+      </div>
+<!--+++++++++++++++++++++++++++++++++++++++++++++COMBOS CONTAINER++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+<div id="CombosContainer">              
+                <div class="posFondoClaro" style="top: 200px;left: 40px;width:1010px; height:500px;border:1px solid; background-color:white; opacity:0.5;z-index: -3"></div>
+                <div class="whiteBoxContainer" style="top: 225px;left:70px;width:950px; height:450px;border:1px solid; background-color:white;;z-index: -2"></div>     
+               
+                
+                <div id="apagarCombo_Cuadro"  class="hideContainer" >
+                       
+                   <b-container>         
+                            <h2 id="comboDesc" class="posContainerDesc" >Elige un combo :</h2>                       
+                                                   
+                              <b-list-group class="list1 "  style="min-width:700px">
+                                 <div v-for="c1 in Combos" :key="c1.name" >
+                                                      
+                                    <template v-if= "c1.station_id ==stationIdentifier[0]">                
+                                         <b-list-group-item button > <input type="checkbox"  name="chCombo" v-bind:id= "c1.combo_id"  v-on:click="borrarComboAnterior(c1.combo_id)">
+                                           <b-container class="bv-example-row">
+                                           <b-row class="text-left">          
+                                              <b-col cols="8"> {{ c1.name }}<br>
+                                                 <div style="font-size:20px">{{c1.c_desc}}</div> </b-col>
+                                              <b-col cols="3">$ {{c1.price}}</b-col>  
+                                           </b-row>
+                                           </b-container>                                     
+                                                           
+                                        </b-list-group-item>               
+                                    </template>
+                                 </div> 
+
+                              </b-list-group>
+                
+                <b-button  pill variant="outline-success"  v-on:click="permitirPasoCombo()" class="moverFlecha greenButton"  style=" font-size:30px" >Siguiente
+                 <b-icon icon="chevron-double-right" aria-hidden="true"></b-icon> </b-button>
+                </b-container>             
+               </div>
+                    <!--++++++++++++++++++++++++++++++++++++Sides CONTAINER+++++++++++++++++++++++++++++++++++++++++--> 
+              <div id="apagarSides_Cuadro"  class="hideContainer" >
+                        
+                 <h2 id="t2" class="posTituloContainer" style="font-size:32px">Acompañantes</h2>
+                 <h2 id="sidesDesc" class="posContainerDesc" >Elige {{sidesDelCombo[0]}} de las opciones:</h2>  
+                             
+                             <b-list-group class="list1">
+                              <div v-for="c1 in Sides" :key="c1.name">
+                                  <template v-if= "c1.station_id ==stationIdentifier[0]">                
+                                    <b-list-group-item>     <input type="checkbox"  name="chSides" v-bind:id= "c1.item_id" >
+                                           {{ c1.name }} -  ${{c1.price}}<br> </b-list-group-item>               
+                                  </template>             
+                                  
+                              </div>
+                              </b-list-group>                  
+                <b-button pill variant="outline-success"   v-on:click=" limitarSides()" class="moverFlecha greenButton"  style=" font-size:30px" >Siguiente
+                <b-icon icon="chevron-double-right" aria-hidden="true"></b-icon> </b-button>
+
+                 <b-button pill variant="outline-success"   v-on:click="revirarPantalla()"class="moverFlecha greenButton"  style=" font-size:30px;left:610px" >
+                <b-icon icon="chevron-double-left" aria-hidden="true"></b-icon>Revirar </b-button>
+                               
+              </div>
+
+                   <!--++++++++++++++++++++++++++++++++++++Drinks CONTAINER+++++++++++++++++++++++++++++++++++++++++-->
+              <div id="apagarDrinks_Cuadro" class="hideContainer ">
+                        
+                              <h2 id="t3" class="posTituloContainer" style="font-size:32px">Bebidas</h2>
+                               <h2 id="deinkDesc" class="posContainerDesc" >Eligue una bebida:</h2>
+                                  <b-list-group class="list1 ">
+                                   <div v-for="c1 in Drinks" :key="c1.name">
+                                  <template v-if= "c1.station_id ==stationIdentifier[0]">                
+                                   <b-list-group-item>        <input type="checkbox"  name="chDrinks" v-bind:id= "c1.item_id" v-on:click="borrarDrinkAnterior(c1.item_id)">
+                                           {{ c1.name }} -  ${{c1.price}}<br> </b-list-group-item>               
+                                  </template>            
+                                 </div>     
+                                  </b-list-group>           
+                <b-button pill variant="outline-success"  v-on:click="limitarDrinks()" class="moverFlecha greenButton"  style=" font-size:30px" >Añadir               
+                <b-icon icon="chevron-double-right" aria-hidden="true"></b-icon> </b-button>
+
+                <b-button pill variant="outline-success"   v-on:click="revirarPantalla()"class="moverFlecha greenButton"  style=" font-size:30px;left:610px" >
+                <b-icon icon="chevron-double-left" aria-hidden="true"></b-icon>Revirar </b-button>             
+              </div> 
+
+                   <!--++++++++++++++++++++++++++++++++++++Free Topping CONTAINER+++++++++++++++++++++++++++++++++++++++++-->
+
+              <div id="apagarFreeToppings_Cuadro" class="hideContainer">
+                        
+                      <h2 id="t4" class="posContainerDesc" style="left:130px">Escoge {{freeTDelCombo[0]}} Ingredientes Gratis</h2>
+                                  <b-list-group class="list1 ">
+                                  <div v-for="c1 in RellenosGratis" :key="c1.name">
+                                  <template v-if= "c1.station_id ==stationIdentifier[0]">                
+                                    <b-list-group-item>       <input type="checkbox"  name="chFree" v-bind:id= "c1.item_id" v-on:click="addRemoveTGtoArray(c1.item_id);limitarFreeT()">
+                                           {{ c1.name }} -  ${{c1.price}}<br>  </b-list-group-item>               
+                                  </template>            
+                                 </div>   
+                                  </b-list-group>      
+                <b-button pill variant="outline-success"  v-on:click="pasarPantalla3()" class="moverFlecha greenButton"  style=" font-size:30px" >Siguiente
+                <b-icon icon="chevron-double-right" aria-hidden="true"></b-icon> </b-button>
+
+                 <b-button pill variant="outline-success"   v-on:click="revirarPantalla()"class="moverFlecha greenButton"  style=" font-size:30px;left:610px" >
+                <b-icon icon="chevron-double-left" aria-hidden="true"></b-icon>Revirar </b-button>
+                               
+              </div>  
+                   <!--++++++++++++++++++++++++++++++++++++Pay Toppings CONTAINER+++++++++++++++++++++++++++++++++++++++++-->
+               <div id="apagarPayToppings_Cuadro" class="hideContainer" >
+                        
+                       <h2 id="t5" class="posContainerDesc" style="left:600px">Ingredientes con costo adicional</h2>    
+                       <b-list-group class="list2 ">
+                       <div v-for="c1 in RellenosConPago" :key="c1.name">
+                                  
+                                  <template v-if= "c1.station_id ==stationIdentifier[0]">                
+                                    <b-list-group-item>       <input type="checkbox"  name="chPay" v-bind:id= "c1.item_id"  v-on:click= "addRemoveTPaytoArray( c1.item_id);updatePayTPrice()">
+                                           {{ c1.name }} -  ${{c1.price}}<br> </b-list-group-item>               
+                                  </template>            
+                                 </div>  
+                                  </b-list-group>                                          
+                <b-button pill variant="outline-success"   v-on:click="pasarPantalla3()" class="moverFlecha greenButton"  style=" font-size:30px" >Siguiente
+                <b-icon icon="chevron-double-right" aria-hidden="true"></b-icon> </b-button>
+
+                  <b-button pill variant="outline-success"   v-on:click="revirarPantalla()"class="moverFlecha greenButton"  style=" font-size:30px;left:610px" >
+                <b-icon icon="chevron-double-left" aria-hidden="true"></b-icon>Revirar </b-button>              
+              </div> 
+
+                   <!--++++++++++++++++++++++++++++++++++++Item_Specification CONTAINER+++++++++++++++++++++++++++++++++++++++++-->
+               <div id="apagarSpecialInstruction_Cuadro" class="hideContainer" >
+                        <div class="posFondoClaro" style="top: 120px;left:0px;width:100%; height:800px;border:1px solid; background-color:black; opacity:0.7;z-index: 0"></div>
+                      
+
+                              <div class= "posContainerDesc costumeForm" >
+                              <p   style="z-index:2 "> ¿Alguna especificación ?</p>
+                             <b-col size="lg">
+                                  <b-form-textarea id="textarea" placeholder="Escriba las especificaciones aquí..."   rows="3"  > </b-form-textarea>
+                              </b-col>
+                              <b-input-group class="mb-3">
+                              <b-button pill variant="outline-success" v-on:click="revirarPantalla()" class=" greenButton "   style="z-index:2;width:300px" > <b-icon icon="chevron-double-left" aria-hidden="true" style="z-index:2"></b-icon> Revirar</b-button>
+                              <b-button pill variant="outline-success"  v-on:click="pasarMain()" class=" greenButton "   style="z-index:2;positon:absolute;width:300px" >Al carrito
+                              <b-icon icon="chevron-double-right" aria-hidden="true" style="z-index:2"></b-icon> </b-button> 
+                               </b-input-group >
+                              </div>           
+              </div> 
+
+ </div>                
+<!--+++++++++++++++++++++++++++++++++++++++++++++END COMBOS++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+</div><!--End pantalla ordenes-->
+
+  <!--++++++++++++++++++++++++++++++++++++++++++   Caja Checkout  +++++++++++++++++++++++-->
+            <div  id="apagarCheckout" >
+
+                
+                <b-img src="../images/vegetales.jpg" alt="im1"  class= "moverFlecha" style="left:70%; top: 200px" width="400"></b-img>
+ <b-list-group-item  >
+<b-container class="bv-example-row">
+    <b-row class="justify-content-md-center" >
+    <b-col cols="3" md="auto">1 of 3</b-col>
+    <b-col cols="3" md="auto">2 of 3</b-col>
+    <b-col cols="3" md="auto">3 of 3</b-col>
+  </b-row>
+
+</b-container>
+     </b-list-group-item  >         
+              <!--      <div class="box-pos4" style="width:500px; height:540px;border:3px solid; background-color:white;box-shadow: 7px 8px 5px rgba(0, 0, 0, 0.2);"></div> 
+                     <div class="listOrderContainer">
+                            <h3>PEDIDOS</h3>
+                             <div class="limit2">
+                              <li v-for="c1 in item_comboElegido" :key="c1.pedido">                                                                         
+                               <p class="limit">{{ c1.pedido }}</p>   
+                                 ___________________________________________  ${{ c1.precio }}
+                              <input type="image"  src="../images/xButton.png" alt="Delete"  v-on:click="borrarOrden(c1.pedido)" width="20" height="20" ><br>                                               
+                              </li> 
+                              </div>
+                                </div>     
+                                <h4 class="totalContainer" > Total:       {{total}}    </h4>   
+ -->
+                </div>
+
+
+                    
+
+
+</ul><!--ULTIMO UL-->
+
+<script src="../js/order.js"></script>      
+
     </body>
 </html>
