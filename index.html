@@ -1,0 +1,26 @@
+<!--Main page for MM2Go-->
+<html>
+<head>
+    <title>MM2GO</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <href link = "./css/home.css" rel = "stylesheet"></href>
+</head>
+<body>
+    <header> 
+        <button id = "dashboard-ref"><a href = "pages/login.html">Dashboard</a></button>
+    </header>
+<div id = "menu-container"> 
+    <h1>Menu Container</h1>
+    <div id = "menu-list">
+        <ul>
+            <li v-for = "combo in combos" :key = "combo.name">
+              {{ combo.name }} - ${{ combo.price }}
+            </li>
+        </ul>
+    </div>
+</div>
+<button id = "ordering-ref"><a href = "pages/ordering-system.html">Ordena Ahora</a></button>
+<script src="js/home.js"></script>
+</body>
+
+</html>
