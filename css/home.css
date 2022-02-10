@@ -3,16 +3,8 @@ body{
     background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-dark.png");
     /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
     font-family: 'Montserrat';
-    font-size: 18px;
+    font-size: 18px; 
     margin:0;
-}
-
-p{
-  color: white;
-}
-
-.form{
-  color: white;
 }
 
 .mm{
@@ -20,84 +12,131 @@ p{
     flex-direction: column;
     justify-content: center;
     text-align: center;
+    letter-spacing: 20px;
     text-transform: uppercase;
     font-weight: bolder;
-    letter-spacing: 20px;
     font-size: 36px;
 }
 
 .logo-container{
     position: absolute;
     background-color: white;
-    width: auto;
+    width: auto; 
     margin: 0;
     height: 100px;
-
+ 
 }
-
 
 .rg-logo{
-    position: relative;
+    position: relative; 
     width: 15%;
-    margin-left: 5%;
-    margin-right: 17%;
-    transform: translate(0, -10%);
+    margin-left: 5%; 
+    margin-right: 17%; 
+    transform: translate(0, -10%); 
 }
-
+/* 
 .mm2go-logo{
     position: relative;
     width: 10%;
+} */
 
-}
-
-
-.combo-container{
-    float: left;
-    margin-left: 5%;
-    width: 40%;
-    background-color: #0c3a33;
+#combos{
+    float: right; 
+    width:40%;
+    background-color: #d8dee4;
+    color: #042c27;
     font-weight: bolder;
     border-radius: 5px;
+    margin-right: 10%;
+    height: 65%;
 }
-
-.combo-container h1{
+#combos h1{
     text-align: center;
-    color: white;
-    font-size: 30px;
+    background-color: #0c3a33;
+    color: #f8f9fa; 
+    font-size: 36px;
     letter-spacing: 5px;
     text-transform: uppercase;
     padding: 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
-.combo-container td{
-    color: white;
+#combos th{
+    font-size: 20px;
+    padding: 20px;
+}
+#combos td{
+    font-size: 20px;
+    color: #0c3a33;
+    padding: 20px;
 }
 
-.combo-container tr:hover td{
-    background-color: #051b18;
+#combos tr:hover td{
+    background-color:#c5cace;
+}
+
+
+#station-dropdown{
+    width: 200px;
+    position:relative;
+    
+}
+
+#subscribe-button{
+    position: relative;
+    background-color: #0c3a33;
+    color: #f8f9fa;
+    font-size: 22px;
+    filter: drop-shadow(0 5px 10px #042c27);
+    width: 250px;
+    display: block;
+    margin-top: 5%;
+    margin: auto; 
+
+}
+
+#subscribe-button:hover{
+    background-color:  #051b18;
 }
 
 #order-button{
-    float: left;
-    position: absolute;
-    left: 18%;
-    background-color: white;
+    position: relative;
+    background-color: #0c3a33;
+    color: #f8f9fa;
     font-size: 22px;
-    margin-top: 22%;
     filter: drop-shadow(0 5px 10px #042c27);
+    width: 250px;
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-bottom: 5%;  
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-#order-button a{
-    color:  #0c3a33;
+#order-button:hover{
+    background-color:  #051b18;
 }
+
 
 .subscribe-container{
     position: relative;
     border-radius: 5px;
-    background-color:  #0c3a33;
-    width: 40%;
-    margin-right: 5%;
-    float: right;
+    background-color:  #d8dee4;
+    color: #0c3a33;
+    padding: 20px;
+    width: 30%;
+    margin-left: 10%;
+    float: left;
+    height: 65%;
+}
+
+.subscribe-container p{
+    padding: 10px;
+    font-size: 20;
 }
 
 #dashboard-button{
@@ -106,12 +145,42 @@ p{
     background-color: #0c3a33;
     color: #f8f9fa;
     filter: drop-shadow(0px 5px 5px #042c27);
-    margin-left: 25%;
     margin-right: 5%;
+    margin-left: 17%;
+    width: 200px;
 }
 
 #dashboard-button:hover{
     background-color: #051b18;
-    color: #f8f9fa;
-
+    color: #f8f9fa;   
 }
+
+.form-group{
+    padding: 3%;
+}
+
+.form {
+    height: 60%;
+    overflow-y: auto;
+  }
+  
+.form::-webkit-scrollbar, .menu-list::-webkit-scrollbar {
+width: 8px;
+padding: 10px;
+}
+
+.form::-webkit-scrollbar-track, .menu-list::-webkit-scrollbar-track {
+background: #051b18;
+border-radius: 12px;
+}
+
+.form::-webkit-scrollbar-thumb, .menu-list::-webkit-scrollbar-thumb {
+background: #0c3a33;
+border-radius: 12px;
+}
+
+.menu-list{
+    overflow-y: scroll;
+    height: 60%;
+}
+

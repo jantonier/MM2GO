@@ -1,261 +1,522 @@
+<!-- Administrative Dashboard for MM2GO -->
 <html>
     <head>
-        <title>Dashboard</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-        <link rel = "stylesheet" href = "../css/dashboard.css">
+       <title>Mama Mia - Dashboard Administrativo</title>
+       <meta charset = "utf-8">
+       <!--Montserrat font dependency-->
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+       <!--Axios dependency (for HTTP requests)-->
+       <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+
+       <!--Vue dependency-->
+       <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+       <!-- Bootstrap Vue dependencies-->
+       <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+       <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+       <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+       <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+       <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
+       <!--Chart.js dependency-->
+       <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+       <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+
+       <!--Icons-->
+       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+       <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.css" />
+       <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+       
+       <link href = "../css/dashboard.css" rel = "stylesheet">
         
-        <meta charset="utf-8">
+       <!--If there is no session token, redirect to the login page. -->
+       <script type='text/javascript'>
+            if(localStorage.getItem("session-token") === null)
+                location.replace('./login.html');
+        </script>
+
+        
     </head>
-    <body>
-
-
-        <div class="modal_location">
-        
-            <div class="modal-box" >
-            
-                <div class="close-modal" >X</div>
-                <h1>Escriba abajo</h1>
-
-                <div class="item-clicked" ></div>
-
-
-                <textarea class="edited-item" ></textarea>
-
-                <p>Al terminar oprima submit</p>
-                <button class="edit-submit" >Submit</button>
-            
-            </div>
-
+    <body> 
+        <div id = "navbar">
+            <b-sidebar id="navigation" visible text-variant="light" shadow>
+                    <b-nav id="nav-container" vertical class="navbar-tabs">
+                      <b-nav-item id="nav-item-1" v-on:click = changeTab><i class='fas fa-edit'>&nbsp;</i>Edición de Menú</b-nav-item>
+                      <b-nav-item id="nav-item-2" v-on:click = changeTab><i class='far fa-list-alt'>&nbsp;</i>Ver Órdenes</b-nav-item>
+                      <b-nav-item id="nav-item-3" v-on:click = changeTab><i class='fas fa-chart-bar'>&nbsp;</i>Reportes</b-nav-item>
+                      <b-nav-item id="nav-item-4" v-on:click = changeTab><i class='far fa-envelope'>&nbsp;</i>Componer Email</b-nav-item>
+                      <b-nav-item id="nav-item-5" v-on:click = changeTab><i class='fas fa-users'>&nbsp;</i>Administradores</b-nav-item>
+                    </b-nav>
+                  <b-button pill id = "logout-button" v-on:click="redirectToHome">Cerrar Sesión</b-button>
+            </b-sidebar>
         </div>
+        <!--Dynamic Container -->
+        <div class = "dynamic-container">
+            <!-- Menu Editing-->
+            <div id = "station-editing">
+                <div id = "station-editing-container">
+                <div class = "station-editing-container">
+                    <h1>Edición de Menú</h1>
 
+                    <div class = "operational-data-container">
+                        <h2>Información General</h2>
+                        <div class = "operational-data-forms">
+                        <b-form inline>
+                            <b-form-group id = "opening-hour-form" label = "Hora de apertura" label-for = "opening-hour">
+                                <b-form-input id = "opening-hour"  v-model = 'time_from' :value = "time_from" type = "time" :state = "validateTime" aria-describedby="invalid-opening-hour-feedback"></b-form-input>
+                                <b-form-invalid-feedback id="invalid-opening-hour-feedback">
+                                    Hora de apertura debe ser más temprana que la hora de cierre.  
+                                  </b-form-invalid-feedback>
+                            </b-form-group>
+                            <b-form-group id = "closing-hour-form" label = "Hora de cierre" label-for = "closing-hour" >
+                                <b-form-input id = "closing-hour" v-model = 'time_to' :value = "time_to" type = "time" :state = "validateTime" aria-describedby="invalid-closing-hour-feedback"></b-form-input> 
+                                <b-form-invalid-feedback id="invalid-closing-hour-feedback">
+                                    Hora de cierre debe ser más tarde que la hora de apertura.   
+                                  </b-form-invalid-feedback>
+                            </b-form-group>
+                            <b-form-group id = "delivery-fee-form" label= "Costo de encargo" label-for = "delivery-fee">
+                                <b-form-input id = "delivery-fee" v-model = "delivery_fee" :placeholder="delivery_fee" :state = "validateDeliveryFee" aria-describedby="invalid-delivery-fee-feedback"></b-form-input>
+                                <b-form-invalid-feedback id="invalid-delivery-fee-feedback">
+                                    Costo de encargo debe ser número y no debe contener más de dos cifras decimales.  
+                                  </b-form-invalid-feedback>
+                            </b-form-group>
+                            <b-form-group id = "tax-form" label="Impuesto (%)" label-for = "tax">
+                                <b-form-input id="tax" v-model = "sales_tax" :placeholder="sales_tax" :state = "validateTax" aria-describedby="invalid-tax-feedback"></b-form-input>
+                                <b-form-invalid-feedback id="invalid-tax-feedback">
+                                    Impuesto debe ser númerico y no debe contener más de dos cifras decimales.   
+                                  </b-form-invalid-feedback>
+                            </b-form-group>
+                        </div>
+                        <b-button pill id="operational-data-button" v-on:click="updateGeneralInfo">Actualizar</b-button>
+                    </div>
+                    <div class = "station-container">
+                        <h2>Estaciones</h2>
+                            <b-form-input placeholder = "Buscar estación" v-model = "station_search" class = "search-bar"></b-form-input>
+                            <div class = "stations">
+                            <ul vertical class = "station-buttons" v-for="station in filteredStations">
+                                <li v-if = "station.is_active === '1'">
+                                    <b-button v-on:click="openStation" class = "active_station" :value = "station.station_id" v-b-tooltip.hover.top title= "Oprima aqui para ver el contenido de la estación.">
+                                        {{station.station_name}}
+                                    </b-button>
+                                     <b-button v-on:click="setStation" :value = "station.station_id" class = "edit-button" v-b-modal.station_editing v-b-tooltip.hover.top title="Oprima aquí para editar el nombre de la estación."><b-icon icon = "pencil-square" class = "icon h2 mb-2"></b-icon></b-button>
+                                     <b-button :value = "station.station_id" class="edit-button" v-on:click = "setStation" v-b-modal.remove_station  v-b-tooltip.hover.top title="Oprima aquí para remover la estación."><b-icon icon = "x-square" class = "icon h2 mb-2"></b-icon></b-button>
+                                     <b-button v-on:click = "setStationVisibility" :value = "station.station_id" class="edit-button" v-b-tooltip.hover.right title="Oprima aquí para desactivar la estación."><b-icon icon = "eye" class = "icon h2 mb-2"></b-icon></b-button>
+                                </li>
+                                <li v-else>
+                                    <b-button v-on:click="openStation" class = "disabled_station" :value = "station.station_id" v-b-tooltip.hover.top title= "Oprima aqui para ver el contenido de la estación.">
+                                        {{station.station_name}}
+                                    </b-button>
+                                    <b-button v-on:click="setStation" :value = "station.station_id" class = "edit-button" v-b-modal.station_editing v-b-tooltip.hover.top title="Oprima aquí para editar el nombre de la estación."><b-icon icon = "pencil-square" class ="icon h2 mb-2" ></b-icon></b-button>
+                                    <b-button :value = "station.station_id" class="edit-button" v-on:click = "setStation" v-b-modal.remove_station v-b-tooltip.hover.top title="Oprima aquí para remover la estación."><b-icon icon = "x-square" class = "icon h2 mb-2"></b-icon></b-button>
+                                    <b-button v-on:click = "setStationVisibility" :value = "station.station_id" class="edit-button" v-b-tooltip.hover.right title="Oprima aquí para activar la estación."><b-icon icon = "eye-slash" class = "icon h2 mb-2"></b-icon></b-button>
+                                </li>
+                            </ul>
+                            <b-modal id="remove_station" centered title="Remover Estación" @ok = "removeStation">
+                                <p class="my-4">¿Está seguro que desea remover la estación de {{chosen_station_name}}?
+                                    Todo combo y artículo asociado será removido también. 
+                                </p>
+                            </b-modal> 
+                            <b-modal id="station_editing" centered title="Editar Estación" @ok="changeStationName">
+                                <b-form-input v-model="station_edit_name" :placeholder="chosen_station_name" id = "change-station-name-field" :state = "isAStation" aria-describedby="invalid-station-edit-feedback">{{chosen_station_name}}</b-form-input>
+                                <b-form-invalid-feedback id="invalid-station-edit-feedback">
+                                    Ya existe una estación con ese nombre. Favor de ingresar otro nombre.  
+                                  </b-form-invalid-feedback>
+                            </b-modal>
+                        </div>
 
-        
-        <div id = "dashboard-sidebar" class = "sidebar">
-            <a href = "../index.html"><img src = "../img/mm2go.png" id = "logo"></a>
-            <br>
-            <ul class="dashboard-ul" >
-                <li class="active" ><a  href="#" ><i class='fas fa-edit'>&nbsp;</i> Editaje de Menu </a></li>
-                <li><a href="#" ><i class='far fa-list-alt'>&nbsp;</i> Ver Órdenes</a></li>
-                <li><a href="#" ><i class='fas fa-chart-bar'>&nbsp;</i> Reportes</a></li>
-                <li><a href="#" ><i class='far fa-envelope'>&nbsp;</i> Enviar Email</a></li>
-                <li><a href="#" ><i class='fas fa-users'>&nbsp;</i> Administradores</a></li>
-           </ul>  
-
-           <button onclick = "logout()" class="logout-button" >Logout</button>
-        </div>
-      
-        <!-- Menu Editing-->
-        <div class = "dynamic-container editaje-de-menu">
-            <h1 class="title">Editaje de Menu</h1>
-
-
-
-            <div class = "menu-editing-container">
-                <div id = "menu-editing">
-                    <label for="station">Estación</label>
-                        <select id="station" v-model="selectedStation" @change="onChangeStation($event)">
-                            <option v-for = "station in stations" :key="station">{{ station }}</option>
-                        </select>
-                    <input id="combo-radio" @change="onChangeRadio($event)" type = "radio" value ="Combo" name = "method" checked>
-                    <label for="combo">Combo</label>
-                    <input id="item-radio"  @change="onChangeRadio($event)" type = "radio" value = "Item" name = "method">
-                    <label for="item">Item</label>
+                        <div class = "station-edits">
+                                <b-button pill v-b-modal.add_station id="add_station"><b-icon icon="plus"></b-icon> Añadir Estación</b-button>
+                                <b-modal id = "add_station" centered title="Añadir Estación" @ok = "addStation">
+                                    <b-form-input id = "station-field"></b-form-input>
+                                </b-modal>
+                        </div>
+                     
                 </div>
+                 </div>
+            </div> 
             </div>
-            <div id = "menu-container"></div>
-        </div>
+                
+            <div id = "station-offerings">
+            <div class = "station-offerings-container">
+                <b-button id = "back-to-stations-button" v-on:click = "changeToStations">Estaciones</b-button>
+                <h1>{{chosen_station_name}}</h1>
+                <div class = "offering-tabs">
+                    <b-nav tabs>
+                        <b-nav-item v-on:click="changeToCombo">Combos</b-nav-item>
+                        <b-nav-item v-on:click="changeToItems">Artículos</b-nav-item>
+                      </b-nav>
+                </div>
+                
+           
+                <div class = "offerings-container">
+                    <div v-if = "method_active === 'combo'">
+                        <b-form-input placeholder = "Buscar combo" v-model = "combo_search" class = "search-bar"></b-form-input>
+                    <div class = "offerings">
+                        <div v-for = "combo in filteredCombos">
+                            <b-card v-if = "combo.is_active === '1'"
+                                :header="combo.combo_name"
+                                class = "active-combo-card"    
+                                >
+                                <b-card-text class = "description">
+                                Precio: ${{combo.combo_price}}<br>
+                                {{combo.description}}
+                                </b-card-text>
+                                <b-button :value = "combo.combo_id" class = "edit-button" v-on:click ="setChosenCombo" v-b-modal.combo_editing v-b-tooltip.hover.top title="Oprima aquí para editar la información del combo."><b-icon icon = "pencil-square" class = "icon h2 mb-2"></b-icon></b-button>
+                                <b-button :value = "combo.combo_id" class="edit-button" v-on:click ="setChosenCombo"v-b-modal.remove_combo v-b-tooltip.hover.top title="Oprima aquí para remover el combo."><b-icon icon = "x-square" class = "icon h2 mb-2"></b-icon></b-button>
+                                <b-button v-on:click = "setComboVisibility" :value = "combo.combo_id" class="edit-button" v-b-tooltip.hover.right title="Oprima aquí para desactivar el combo."><b-icon icon = "eye-slash" class = "icon h2 mb-2"></b-icon></b-button>
+                            </b-card>
 
-        <!-- View Orders -->
-        <div class = "dynamic-container ver-ordenes">
-            <h1>Ver Ordenes</h1>
-            <div class = "orders-container" style = "overflow-x: auto;">
-                <div id = "orders">
-                    <table v-for= "building in buildings" >    
-                        <tr>
-                            <th colspan = "2">{{ building }}</th>
-                        </tr>
-                        <tr>
-                            <th>Cash</th>
-                            <th>ATH Móvil</th>
-                        </tr>
-                        <tr v-for = "order in orders">
-                            <td v-if = "order.location === building && order.payment_method === 'Cash'">{{order}}</td>
-                            <td v-if = "order.location === building && order.payment_method === 'ATH Móvil'">{{order}}</td>
-                        </tr>
-                    </table>
+                            <b-card v-else
+                            :header="combo.combo_name"
+                            bg-variant="secondary"    
+                            >
+                                <b-card-text class = "description">
+                                    Precio: ${{combo.combo_price}}<br>
+                                    {{combo.description}}
+                                </b-card-text>
+                                <b-button :value = "combo.combo_id" class = "edit-button" v-on:click ="setChosenCombo" v-b-modal.combo_editing v-b-tooltip.hover.top title="Oprima aquí para editar la información del combo."><b-icon icon = "pencil-square" class = "icon h2 mb-2"></b-icon></b-button>
+                                <b-button :value = "combo.combo_id" class="edit-button" v-on:click ="setChosenCombo" v-b-modal.remove_combo v-b-tooltip.hover.top title="Oprima aquí para remover el combo."><b-icon icon = "x-square" class = "icon h2 mb-2"></b-icon></b-button>
+                                <b-button v-on:click = "setComboVisibility" :value = "combo.combo_id" class="edit-button" v-b-tooltip.hover.right title="Oprima aquí para desactivar el combo."><b-icon icon = "eye-slash" class = "icon h2 mb-2"></b-icon></b-button>
+                            </b-card>
+
+                            
+                        </div>
+                        <b-modal id = "combo_editing" centered title = "Editar Combo" @ok="editCombo">
+                                <b-form-group id = "name-form" label-for = "edit-combo-name">
+                                    <b-form-input id = "edit-combo-name" placeholder = "Nombre del combo"></b-form-input>
+                                </b-form-group>
+                                <b-form-group id = "num-of-side-form" label-for = "edit-num-of-sides">
+                                    <b-form-input id = "edit-num-of-sides" placeholder = "Número de complementos"></b-form-input>
+                                </b-form-group>
+                                <b-form-group id = "free-toppings-form" label-for = "edit-num-of-free-top">
+                                    <b-form-input id = "edit-num-of-free-top" placeholder = "Rellenos/toppings gratis permitidos."></b-form-input>
+                                </b-form-group>
+                                <b-form-group id = "paid-toppings-form" label-for = "edit-num-of-paid-top">
+                                    <b-form-input id = "edit-num-of-paid-top" placeholder = "Rellenos/toppings pagados incluidos."></b-form-input>
+                                </b-form-group>
+                                <b-form-group id = "num-of-drinks-form" label-for = "edit-num-of-drinks">
+                                    <b-form-input id = "edit-num-of-drinks" placeholder = "Cantidad de bebidas"></b-form-input>
+                                </b-form-group>
+                                <b-form-group id = "price-form" label-for = "edit-price">
+                                    <b-form-input id = "edit-price" placeholder = "Precio"></b-form-input>
+                                </b-form-group>
+                                <b-form-group id = "description-form" label-for = "edit-description">
+                                    <b-textarea id = "edit-description" placeholder = "Descripción"></b-textarea>
+                                </b-form-group>
+                        </b-modal>
+                        <b-modal id = "remove_combo" centered title = "Remover Combo" @ok = "removeCombo">
+                            <p>¿Está seguro que desea eliminar el combo <em>{{chosen_combo_name}}</em>? Toda eliminación es final.</p>
+                        </b-modal>
+                    </div>
+                    <div>
+                     <!-- Add Combo Modal-->
+                    <b-button v-b-modal:add_combo class = "edit-button"><b-icon icon="plus"></b-icon> Añadir Combo</b-button>                    
+                        <b-modal id = "add_combo" title="Añadir Combo" @ok = "addCombo">
+                        <b-form-group id = "name-form" label-for = "combo-name">
+                            <b-form-input id = "combo-name" placeholder = "Nombre del combo"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id = "num-of-side-form" label-for = "num-of-sides">
+                            <b-form-input id = "num-of-sides" placeholder = "Número de complementos"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id = "free-toppings-form" label-for = "num-of-free-top">
+                            <b-form-input id = "num-of-free-top" placeholder = "Rellenos/toppings gratis permitidos."></b-form-input>
+                        </b-form-group>
+                        <b-form-group id = "paid-toppings-form" label-for = "num-of-paid-top">
+                            <b-form-input id = "num-of-paid-top" placeholder = "Rellenos/toppings pagados incluidos."></b-form-input>
+                        </b-form-group>
+                        <b-form-group id = "num-of-drinks-form" label-for = "num-of-drinks">
+                            <b-form-input id = "num-of-drinks" placeholder = "Cantidad de bebidas"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id = "price-form" label-for = "price">
+                            <b-form-input id = "price" placeholder = "Precio"></b-form-input>
+                        </b-form-group>
+                        <b-form-group id = "description-form" label-for = "email">
+                            <b-textarea id = "description" placeholder = "Descripción"></b-textarea>
+                        </b-form-group>
+                    </b-modal>
                     
                 </div>
-    
-            </div>
-        </div>
-
-        <!-- Report Generation-->
-        <!-- Report Generation-->
-        <div class = "dynamic-container reportes">
-            <h1>Reportes</h1>
-
-            <!-- Choose Report Type-->
-            <div class="tabs-container" >
-                <div class="w3-bar w3-black">
-                     <button class="w3-bar-item w3-button" onclick="openTab('report')">Reporte</button>
-                     <button class="w3-bar-item w3-button" onclick="openTab('graph')">Gráfico</button>
                 </div>
-              
-                <div id="report" class="w3-container tabs">
-                        <table>
-                            <tr>
-                                <td>Fecha</td>
-                                <td>Número de Órdenes</td>
-                                <td>Total</td>
-                            </tr>
-                            <tr v-for = "data in written_report_data">
-                                <td>{{data.date.getMonth()}}/{{data.date.getDate()}}/{{data.date.getFullYear()}}</td>
-                                <td>{{data.numOfOrders}}</td>
-                                <td>${{data.total.toFixed(2)}}</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Total Generado</td>
-                                <td>{{totalEarnings}} </td>
-                            </tr>
-                        </table>
-                        <!-- </div> -->
+                   <div v-else>
+                    <b-form-input placeholder = "Buscar artículo" v-model = "item_search" class = "search-bar"></b-form-input>
+                    <div class = "offerings">
+                        <div v-for = "item in filteredItems">
+                        <b-card v-if = "item.is_active === '1'"
+                        :header="item.item_name"
+                        class = "active-item-card"
+                      >       
+                      <b-card-text>
+                        Precio: ${{item.item_price}}<br>
+                        Tipo de Artículo: {{item.item_type}}
+                      </b-card-text>
+                      <b-button :value = "item.item_id" v-on:click = "setChosenItem" class = "edit-button" v-b-modal.item_editing v-b-tooltip.hover.top title="Oprima aquí para editar la información del artículo."><b-icon icon = "pencil-square" class = "icon h2 mb-2"></b-icon></b-button>
+                      <b-button :value = "item.item_id" v-on:click = "setChosenItem" class="edit-button" v-b-modal.remove_item v-b-tooltip.hover.top title="Oprima aquí para remover el artículo."><b-icon icon = "x-square" class = "icon h2 mb-2"></b-icon></b-button>
+                      <b-button v-on:click = "setItemVisibility" :value = "item.item_id" class="edit-button" v-b-tooltip.hover.right title="Oprima aquí para desactivar el artículo."><b-icon icon = "eye-slash" class = "icon h2 mb-2"></b-icon></b-button>
+                      </b-card> 
+
+                      <b-card v-else
+                      :header="item.item_name"
+                      bg-variant="secondary"
+                      >
+                      <b-card-text>
+                        Precio: ${{item.item_price}}<br>
+                        Tipo de Artículo: {{item.item_type}}
+                      </b-card-text>
+                      <b-button :value = "item.item_id" v-on:click = "setChosenItem" class = "edit-button" v-b-modal.item_editing v-b-tooltip.hover.top title="Oprima aquí para editar la información del artículo."><b-icon icon = "pencil-square" class = "icon h2 mb-2"></b-icon></b-button>
+                      <b-button :value = "item.item_id" v-on:click = "setChosenItem" class="edit-button" v-b-modal.remove_item v-b-tooltip.hover.top title="Oprima aquí para remover el artículo."><b-icon icon = "x-square" class = "icon h2 mb-2"></b-icon></b-button>
+                      <b-button v-on:click = "setItemVisibility" :value = "item.item_id" class="edit-button" v-b-tooltip.hover.right title="Oprima aquí para desactivar el artículo."><b-icon icon = "eye-slash" class = "icon h2 mb-2"></b-icon></b-button>
+                      </b-card>
+
                     </div>
-              
-                <div id="graph" class="w3-container tabs" style="display:none">
-                <canvas id="salesChart"></canvas>
-                    <script>
-                    var ctx = document.getElementById('salesChart').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
-                            most_sold: ["Carne", "Pollo", "Pescado", "Pizza", "Arroz"],
-                            datasets: [{
-                                label: 'Número de Ventas',
-                                data: [12, 24, 3, 5, 2, 3],
-                                backgroundColor: [
-                                'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                            }],
-                        },
-                        options: {
-                            scales: {
-                                xAxes: [{
-                                    scaleLabel: {
-                                    display: true,
-                                    labelString: 'Ventas',
-                                    fontColor: 'white',
-                                    fontSize: 14,
-                                    
-                                },
-                                gridLines: {
-                                    display: false 
-                                }
-                            }],
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        stepSize: 1,
-                                        fontColor: "white"
+                        <!-- Add Item-->
+                        <b-modal id = "add_item" title="Añadir Artículo" @ok = "addItem">
+                            <b-form-group id = "name-form" label-for = "item-name">
+                                <b-form-input id = "item-name" placeholder = "Nombre del Artículo"></b-form-input>
+                            </b-form-group>
+                            <b-form-group id = "type-form" label-for = "item-type">
+                                <b-dropdown :text = "type" id = "item-type" v-model ="type" :value = "type" class="m-md-2">
+                                    <b-dropdown-item v-on:click="changeType">Proteína</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Acompañante</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Relleno/Topping Gratuito</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Relleno/Topping Pagado</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Bebida</b-dropdown-item>
+                                </b-dropdown>
+                            </b-form-group> 
+                            <b-form-group id = "price-form" label-for = "price">
+                                <b-form-input id = "price" placeholder = "Precio"></b-form-input>
+                            </b-form-group>
+                        </b-modal>
 
-                                    },
-                                    scaleLabel: {
-                                        display: true,
-                                        labelString: " Número de Ventas",
-                                        fontColor: "white",
-                                        fontSize: 14
-                                    }
-                                }],
-                                legend :{
-                                    labels :{
-                                        fontColor: 'white',
-                                        fontSize: 14
-                                    }
-                                }
-                            },
-                            tooltips: {
-                                label: {
-                                                fontColor: 'white',
-                                                fontSize: 14
-                                            },
-                                callbacks: {
-                                    label: function(tooltipItem, data){
-                                        return ["Total de ventas: " + tooltipItem.yLabel,
-                                                "Combo más vendido: " + data.most_sold[tooltipItem.index]]
-                                    }
-                                }
-                            },
-                            legend: {
-                                labels: {
-                                    fontColor: 'white',
-                                    fontSize: 14
-                                }
-                            },
-                        
-                        }
-                    });
-                    </script>
-            </div>
-        </div>
+                        <!-- Edit Item -->
+                        <b-modal id = "item_editing" centered title = "Editar Artículo" @ok = "editItem">
+                            <b-form-group id = "name-form" label-for = "edit-item-name">
+                                <b-form-input id = "edit-item-name" placeholder = "Nombre del Artículo"></b-form-input>
+                            </b-form-group>
+                            <b-form-group id = "type-form" label-for = "edit-item-type">
+                                <b-dropdown :text = type id = "edit-item-type" v-model ="type" :value = "type" class="m-md-2">
+                                    <b-dropdown-item v-on:click="changeType">Proteína</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Acompañante</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Relleno/Topping Gratuito</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Relleno/Topping Pagado</b-dropdown-item>
+                                    <b-dropdown-item v-on:click="changeType">Bebida</b-dropdown-item>
+                                </b-dropdown>
+                            </b-form-group> 
+                            <b-form-group id = "price-form" label-for = "edit-price">
+                                <b-form-input id = "edit-price" placeholder = "Precio"></b-form-input>
+                            </b-form-group>
+                        </b-modal>
 
-    </div>
-
-        <!--Email Service -->
-        <div class = "dynamic-container enviar-email">
-            <h1>Enviar Email</h1>
-            <div id = "email">
-                <form>
-                    <ul>
-                        <li><input type = "text" placeholder = "Subject"></li>
-                        <li><input class="email-content" type = "text" placeholder = "Email Content"></li>
-                    </ul>
-                    <button v-on:click="sendEmail">Enviar Email</button>
-                </form>
-            </div>
-        </div>
-
-        <!--Adminstration-->
-        <div class = "dynamic-container administradores">
-            <h1>Administradores</h1>
-            <div id = "admin">
-                <ul>
-                    <li v-for = "admin in admins">{{admin.first_name}} {{admin.last_name}} - {{admin.role}}</li>
-                    <button v-on:click="removeAdministrator">Remover Administrador</button>
-                </ul>
-                <button class="add_Admin" v-on:click="addAdministrator">Añadir Administrador</button>
+                        <!-- Remove Item-->
+                        <b-modal id = "remove_item" centered title = "Remover Artículo" @ok = "removeItem">
+                            <p>¿Está seguro que desea eliminar el artículo <em>{{chosen_item_name}}</em>? Toda eliminación es final.</p>
+                        </b-modal>
+                    </div>
+                    <b-button v-b-modal.add_item class = "edit-button"><b-icon icon="plus"></b-icon>Añadir Item</b-button>
+                </div>
+            </div>           
+             </div>
+             </div>
+             
             
+
+            <!--Ver Ordenes-->
+            <div id = "view-orders">    
+                <div class = "order-container">
+                    <h1>Ver Órdenes</h1>
+                    <b-form-input placeholder = "Buscar edificio" v-model = "building_search" class = "search-bar"></b-form-input>
+                    <div class = "building-order-container">
+                    <div v-for = "building in filteredBuildings">
+                        <div v-if = "hasOrders(building)">
+                            <h3>{{building}}</h3>
+                        <b-table hover striped bordered outlined fixed head-variant = "light" class = "order-table" :items = "getOrdersByBuilding(building)">
+                            <template v-slot:cell(cash)="data">
+                                <tr v-for = "orders in getCashOrdersByBuilding(building)">
+                                    <td>
+                                    <strong>Cliente:</strong> {{orders.client_firstname}} {{orders.client_lastname}}<br>
+                                    <strong>Telefono:</strong> {{orders.phone_number}} <br>
+                                    <strong>Destino:</strong> {{orders.room}} <br>
+                                    <strong> Orden:</strong> <br>
+                                    &emsp;<strong>Combos:</strong>
+                                    <ul v-for="combo in orders.order.combos">
+                                        &emsp;<li>{{combo.combo_name}}</li>
+                                        &emsp;&emsp;<ul v-if = "combo.ingredients.length > 0" v-for = "ingredient in combo.ingredients">
+                                        &emsp;&emsp; &emsp;&emsp;<li>{{ingredient}}</li>
+                                                    </ul>
+                                        &emsp;<strong>Acompañantes:</strong>
+                                            <ul v-for = "side in combo.sides">
+                                            &emsp;&emsp; &emsp;&emsp;<li>{{side}}</li>
+                                            </ul>
+                                        
+                                        &emsp;<strong>Instrucciones:</strong> <br>
+                                        &emsp;&emsp;{{combo.special_instructions}}    
+                                        &emsp;<li v-if = "combo.drink !== ''"><strong>Bebida:</strong> {{combo.drink}}</li>
+    
+                                    </ul>
+                                    &emsp;<strong>Artículos:</strong>
+                                    <ul v-for="item in orders.order.items">
+                                        &emsp;&emsp;<li>{{item.item_name}}</li>
+                                    </ul>
+                                    
+                                    <br>
+                                    &emsp;<strong>Precio:</strong> ${{orders.order_price}}<br><br>
+                                    <b-button v-b-modal.cancel_order class = "cancel-order-button" :value = "orders.order_id" size="sm" v-on:click="setOrderForRemoval">
+                                      Cancelar Orden
+                                    </b-button>
+                               
+                                    </tr>
+                                </td>
+                                <b-modal id="cancel_order" centered title="Remover Orden" @ok = "removeOrder">
+                                    <p>¿Está seguro que desea remover la orden?</p>
+                                </b-modal>
+                           
+                            </template>
+
+                            <template v-slot:cell(ath_movil)="data">
+                                <tr v-for = "orders in getATHMovilOrdersByBuilding(building)">
+                                <td>
+                                <strong>Cliente:</strong> {{orders.client_firstname}} {{orders.client_lastname}}<br>
+                                <strong>Telefono:</strong> {{orders.phone_number}} <br>
+                                <strong>Destino:</strong> {{orders.room}} <br>
+                                <strong> Orden:</strong> <br>
+                                &emsp;<strong>Combos:</strong>
+                                <ul v-for="combo in orders.order.combos">
+                                    &emsp;<li>{{combo.combo_name}}</li>
+                                    &emsp;&emsp;<ul v-if = "combo.ingredients.length > 0" v-for = "ingredient in combo.ingredients">
+                                    &emsp;&emsp; &emsp;&emsp;<li>{{ingredient}}</li>
+                                                </ul>
+                                    &emsp;<strong>Acompañantes:</strong>
+                                        <ul v-for = "side in combo.sides">
+                                        &emsp;&emsp; &emsp;&emsp;<li>{{side}}</li>
+                                        </ul>
+                                    
+                                    &emsp;<strong>Instrucciones:</strong> <br>
+                                    &emsp;&emsp;{{combo.special_instructions}}    
+                                    &emsp;<li v-if = "combo.drink !== ''"><strong>Bebida:</strong> {{combo.drink}}</li>
+
+                                </ul>
+                                &emsp;<strong>Artículos:</strong>
+                                <ul v-for="item in orders.order.items">
+                                    &emsp;&emsp;<li>{{item.item_name}}</li>
+                                </ul>
+                                
+                                <br>
+                                &emsp;<strong>Precio:</strong> ${{orders.order_price}}<br><br>
+                                <b-button v-b-modal.cancel_order class = "cancel-order-button" :value = "orders.order_id" size="sm" v-on:click="setOrderForRemoval">
+                                    Cancelar Orden
+                                  </b-button>
+                            
+                                </tr>
+                            </td>
+                            </template>
+                            <b-modal id="cancel_order" centered title="Remover Orden" @ok = "removeOrder">
+                                <p>¿Está seguro que desea remover la orden?</p>
+                            </b-modal>
+                        </b-table>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!--Reports-->
+            <div id = "reports">
+                <div class = "report-container">
+                    <h1>Reportes</h1>
+                    <b-nav tabs>
+                        <b-nav-item v-on:click="changeReportType">Reporte</b-nav-item>
+                        <b-nav-item v-on:click="changeReportType">Gráfica</b-nav-item>
+                      </b-nav>
+                            <div class = "written-container" v-if="report_type === 'Reporte'">
+                                <h2>Resumen de Ventas</h2>
+                                <div class = "date-submission-container">
+                                    <p id= "written-error"></p>
+                                    <label for="written-from">Fecha desde:</label>
+                                    <input type="date" id="written-from">
+                                    <label for="written-to">Fecha hasta:</label>
+                                    <input type="date" id="written-to" label="Fecha hasta:">
+                                    <b-button v-on:click = "getWrittenData">Generar Reporte</b-button>
+                                </div>
+                                <div class = "written-report">
+                                    <b-table :items="items"></b-table>
+                                </div>
+                            </div>
+
+                            <div class = "graph-container" v-else>
+                                <h2>Gráfica de Ventas</h2>
+                                <div class = "weekly-graph-container">
+                                    <p id = "graph-error"></p>
+                                    <label for="graph-from">Fecha desde:</label>
+                                    <input type="date" id="graph-from">
+                                    <label for="graph-to">Fecha hasta:</label>
+                                    <input type="date" id="graph-to">
+                                    <b-button v-on:click = "getGraphData">Generar Reporte</b-button>
+                                    <!--Vue component for bar-chart (refer to dashboard.js for declaration)-->
+                                    <bar-chart ref="bar_chart"></bar-chart>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                 
+                </div>
+            
+            <!--Email-->
+            <div id = "email">
+                <div class = "email-container">
+                    <h1>Componer Email</h1>
+                    <b-nav tabs fill>
+                        <b-nav-item v-on:click="changeEmailView">Email</b-nav-item>
+                        <b-nav-item v-on:click="changeEmailView">Subscriptores</b-nav-item>
+                      </b-nav>
+
+                    <div class = "email-fields" v-if = "view === 'Email'">
+                        <h2>Email</h2>
+                        <b-form-input placeholder = "Sujeto" id = "subject"></b-form-input>
+                        <b-form-textarea no-resize placeholder= "Contenido" id = "email-content"></b-form-textarea>
+                        <b-button pill id = "send-email-button" v-on:click="sendPromoEmail">Enviar Email</b-button>
+                    </div> 
+                    <div v-else class = "email-subscribers">
+                        <h2>Subscriptores</h2>
+                        <b-table :items="items"></b-table>
+                    </div>
+                </div>
+            </div>
+            <!--Administrators-->
+            <div id = "admin">
+                <div class = "admin-container">
+                    <h1>Administradores</h1>
+                    <div class = "administrators">
+                        <div class = "administrators-list" v-if = "role === 'head'">
+                        <b-list-group v-for = "administrator in administrators">
+                            <div v-if = "administrator.role === 'head'">
+                                <b-list-group-item class = "admin-name">{{administrator.administrator_firstname}} {{administrator.administrator_lastname}} - {{administrator.role}}</b-list-group-item>
+                            </div>
+                            <div v-else>
+                                <b-list-group-item class = "admin-name">{{administrator.administrator_firstname}} {{administrator.administrator_lastname}} - {{administrator.role}}</b-list-group-item>
+                                <b-button :value = "administrator.administrator_id" v-on:click = "setAdministrator" :value = "administrator.administrator_id" class="remove-admin-button" v-on:click = "setStation" v-b-modal.remove_administrator
+                                v-b-tooltip.hover.top title="Oprima aquí para remover el administrador."><b-icon icon = "x-square" class = "icon h2 mb-2"></b-icon></b-button>
+                            </div>
+                        </b-list-group>   
+                        <b-modal id="remove_administrator" centered title="Remover Administrador" @ok = "removeAdministrator">
+                            <p>¿Está seguro que desea remover el administrador {{chosen_administrator_name}}?</p>
+                        </b-modal>
+                    
+                        <b-button v-b-modal.add_administrator class = "add-administrator"><b-icon icon="plus"></b-icon>Añadir Administrador</b-button>
+                        <b-modal id="add_administrator" centered title="Añadir Administrador" @ok = "addAdministrator">
+                            <p>Escriba el email del administrador que desea registrar.</p>
+                          <b-form-input v-model = "admin_email" placeholder = "Email" :state="validateEmail" id = "administrator-email"></b-form-input>
+                        </b-modal>
+                    </div>
+                    <div class = "administrators-list" v-else>
+                        <b-list-group v-for = "administrator in administrators">
+                            <b-list-group-item>{{administrator.administrator_firstname}} {{administrator.administrator_lastname}} - {{administrator.role}}</b-list-group-item>
+                        </b-list-group> 
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
-
-
-
-
-        <script>
-           function openTab(tab) {
-                var tabs = document.getElementsByClassName("tabs");
-                for (var i = 0; i < tabs.length; i++) {
-                    tabs[i].style.display = "none";  
-                }
-                document.getElementById(tab).style.display = "block";  
-            }
-            </script>
-
-
-
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     
         <script src = "../js/dashboard.js"></script>
+        
     </body>
 </html>

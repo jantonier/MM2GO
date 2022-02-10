@@ -1,529 +1,214 @@
-/*.btn:hover {
-  background-color: #01df31;
-  }
-.btn{
-  background-color: #03ad2e;
-  box-shadow: 7px 8px 10px rgba(0, 0, 0, 0.2);
-  font-size: 24px;
-}*/
-
-/*botones estaciones y ofertas*/
-.bpton1:hover {
-  background-color: #01df31;
-  }
-
-  .m-2:hover{
-    background-color: #01df31;
-  }
-.boton1{
-  background-color: #03ad2e;
-  box-shadow: 7px 8px 5px rgba(0, 0, 0, 0.1);
-  font-size: 24px;
-}
-.choose:hover{
-  background-color: #d5ff95;
-
-}
-.dCaja1{
-  position:absolute;left:300px;top:130px;
-  
-}
-.dCaja2{
-  position:absolute;
-  left:880px;top:130px;
-}
-.hideContainer {
- display: none;
-}
-.dCaja:hover {
-  background-color: #d5ff95;
- }
-
- /*posicion del titulo del combo*/
-.posTituloContainer {
- position: absolute;
- bottom: 600px;
- left: 500px;
- font-size: 30px;font-weight: bold;
- 
-}
-.posContainerDesc {
-  position: absolute;
-  top: 250px;
-  left: 130px;
-  font-size: 28px;
- }
-.costumeForm{
-  padding: 20px 20px 20px 20px;
-  background-color: white;
-  border-radius: 25px;
-  border: 3px solid #73AD21;
-}
-
-/*boton Pagina Principal   */
- .greenButton{ 
-   margin:10px;
-  box-shadow: 7px 8px 10px rgba(0, 0, 0, 0.4) ;
-  font-size:25px;
-  border:solid 4px;
- }
- .greenButton:hover{ 
-  border-color: #9cfd4c;
- }
- .redButton{ 
-  box-shadow: 7px 8px 10px rgba(0, 0, 0, 0.4) ;
-  font-size:25px;
-  border:solid 4px;
- }
- .redButton:hover{ 
-  border-color: #ffbc64;
- }
-/*posicionar imagenes   */
-.list1{
-  position: absolute; left: 80px;top:300px;  
-  max-height:350px; min-width:400px;
-  overflow: auto;
-}
-.list2{
-  position: absolute; left: 600px;top:320px;
-  max-height:350px; min-width:400px;
-  overflow: auto;
-}
-
-.moverFlecha {
- position: absolute;
-top: 570px;
- left: 790px;
-}
-
-/*posicionar contenido ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-*/
-/*                    */
-
-
-.proteinas {
- position: absolute;
- top: 298px;
- left: 90px;
- padding: 2px 30px;
- border: 2px solid rgb(0, 116, 44);
- font-size: 20px;
- max-height:470px;
- min-width:360px;
- overflow: auto;
-}
-.proteinasPrice {
- position: absolute;
- top: 0px;
- left: 330px;
- border: 1px solid rgb(166, 236, 2);
- line-height: 24px;
- font-size: 20px;
-}
-.complemento {
- position: absolute;
- top:297px;
- left:550px;
- border: 2px solid rgb(0, 116, 44);
- padding: 2px 30px;
- font-size: 20px;
- max-height: 470px;
- min-width:270px;
- overflow: auto;
- 
-}
-.complementoPrice {
- position: absolute;
- top: 0px;
- left: 220px;
- border: 1px solid rgb(166, 236, 2);
- padding: 1px 10px;
- line-height: 23.5px;
- font-size: 20px;
-}
-
-
-.bebida {
- position: absolute;
- top: 300px;
- left: 930px;
- border: 2px solid rgb(0, 116, 44);
- padding: 2px 20px;
- font-size: 20px;
- max-height: 470px;
- min-width:270px;
- overflow: auto;
-}
-.bebidaPrice {
- position: absolute;
- top: 0px;
- left: 200px;
- border: 1px solid rgb(166, 236, 2);
- padding: 1px 10px;
- line-height: 24px;
- font-size: 20px;
-}
-
-.limit {
- max-width: 420px;
-}
-
-.limit2{
-
-  max-height: 480px;
-  overflow: auto;
-}
-
-.container1 {
- position: absolute;
- bottom: 792px;
- font-size: 18px;
-}
-
-.pagPrincipalContainer {
- position: absolute;
- top: 25px;
- left: 1%;
- 
-}
-
-.optionDropContainer {
- position: absolute;
- bottom: 780px;
- right: 80%;
-}
-
-.posFondoClaro {
- position: absolute;
- bottom: 100px;
- right: 30%;
-}
-.whiteBoxContainer {
- position: absolute;
- bottom: 122px;
- right: 600px;
-}
-
-.container6_1 {
- position: absolute;
- bottom: 570px;
- left: 10%;
- font-size: 30px;
-}
-.comboContainerMenu {
- position: absolute;
- top: 310px;
- left: 7%;
- font-size: 20px;
-}
-.containerS {
- position: absolute;
- top: 350px;
- left: 7%;
- font-size: 20px;
-}
-.containerD {
- position: absolute;
- top: 350px;
- left: 7%;
- font-size: 24px;
-}
-.container6_3 {
- position: absolute;
- bottom: 480px;
- right: 88%;
- font-size: 24px;
-}
-.listOrderContainer {
- position: absolute;
- font-size: 18px;
- top: 18%;
- left: 73%;
-}
-
-.e1 {
- position: absolute;
- top: 18%;
- left: 2%;
- font-weight: bold;
-}
-
-.e2 {
- position: absolute;
- top: 18%;
- left: 21%;
- font-weight: bold;
-}
-
-
-.dropdown:hover .dropdown-content {
- display: block;
- background-color: white;
-}
-.dropdown1:hover .dropdown-content {
- display: block;
- background-color: white;
-}
-
-.dropbtn {
- background-color: #4caf50;
- padding: 13px 70px;
- font-size: 16px;
- border: black solid;
- 
-}
-.dropdown:hover .dropbtn {
- background-color: #da0000;
-}
-.dropdown1:hover .dropbtn {
- background-color: #09090e;
-}
-
-.cont-p {
- position: absolute;
- bottom: 83%;
- right: 93%;
-}
-
-.hideContainer2 {
- display: none;
-}
-.showContainer {
- display: inline-block;
-}
-
-.pcont {
- position: absolute;
- top: 860px;
- left: 20%;
-}
-
-/*Pagina principal boton  */
-.pagPrincipal {
- background-color: white;
- border: solid 4px;
- border-color: #b0fc38;
- color: black;
- padding: 12px 8px;
- font-size: 16px;
- cursor: pointer;
-}
-
-.botonCaja {
- background-color: white;
- border: solid;
- border-color: #d5ff95;
- text-align: left;
- color: black;
- display: inline-block;
- font-size: 16px;
- cursor: pointer;
-}
-
-h1,
-h2 {
- color: #003300;
-}
-/*Fondo  */
+/*Autor: Dariel J. Ramos*/
+/*Propiedades del fondo, estilo de letra */
 body {
- background: linear-gradient(-90deg,#24cdda,  #15ca9d,#26dd78);
- font-size:27px;
-}
-.botonCaja {
- background-color: white;
- border: solid;
- border-color: #d5ff95;
- text-align: left;
- color: black;
- display: inline-block;
- font-size: 16px;
- cursor: pointer;
-}
-/*++++++++++++++++++++++++++++mover Imagenes++++++++++++++++++++*/
-.moverlogo {
- position: absolute;
- bottom: 795px;
- right: 96%;
- font-size: 18px;
-}
-.moverlogo2 {
- position: absolute;
- width:200;
- top: 400px;
- left: 850px;
-}
-
-/*Carrito    */
-
-.box-pos4 {
- position: absolute;
- bottom: 200px;
- right: 40px;
-}
-.botonCaja {
- background-color: white;
- border: solid;
- border-color: #d5ff95;
- text-align: left;
- color: black;
- display: inline-block;
- font-size: 16px;
- cursor: pointer;
-}
-.defbutton {
- background-color: rgb(8, 139, 29);
- border: solid 4px;
- border-color: white;
- padding: 13px 13px;
- text-align: center;
- color: white;
- text-decoration: none;
- display: inline-block;
- font-size: 24px;
- font-weight: bold;
- cursor: pointer;
- border-radius: 25px;
- box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.2);
-}
-.chButtonContainer {
- position: absolute;
-
- left: 72%;
- top: 80%;
-}
-
-.totalContainer {
- position: absolute;
- left: 81%;
- top: 78%;
- background-color: white;
- width: 270px;
- border: 10px solid rgb(156, 223, 1);
- padding: 10px;
- margin: 10px;
- text-align: center;
- font-size: 20px;
-}
-
-.botonCaja {
- background-color: white;
- border: 4px solid;
- border-color: #d5ff95;
- text-align: center;
- color: black;
- display: inline-block;
- font-size: 16px;
- cursor: pointer;
-}
-
-.bCaja:hover {
- background-color: #d5ff95;
-}
-/*
-            Checkout Form Rules
-*/
-
-form {
- position: relative;
- font-size: 20px;
- width: 1000px;
- height: 498px;
- margin: 0 auto;
-}
-
-input:focus,
-textarea:focus {
- background: rgba(10, 10, 8, 0.1);
- border-radius: 3px;
- outline: none;
-}
-.iCustom {
- height: 2.5em;
- vertical-align: middle;
-}
-.nombre {
- position: absolute;
- left: 200px;
- top: 180px;
-}
-
-.apellido {
- position: absolute;
- left: 520px;
- top: 180px;
-}
-
-.localizacion {
- position: absolute;
- left: 200px;
- top: 260px;
-}
-.numeroSalon {
- position: absolute;
- left: 545px;
- top: 260px;
-}
-
-.email {
- position: absolute;
- left: 200px;
- top: 340px;
-}
-
-.telefono {
- position: absolute;
- left: 500px;
- top: 340px;
-}
-.pago {
- position: absolute;
- left: 200px;
- top: 420px;
-}
-
-.agregarButton {
- position: absolute;
- left: 620px;
- top: 400px;
-}
-
-.label {
- font: 0.8em "typewriter", sans-serif;
-}
-
-.input,
-textarea {
- font: 0.9em/1.5em "handwriting", sans-serif;
-
- border: none;
- padding: 0 10px;
- margin: 0;
- width: 240px;
-
- background: none;
-}
-.infTituloContainer{
-  position:fixed;
-  left:200px;
-  background: white;
-  padding: 30px 300px;
-  color: green;
-  font-size: 24px;
-}
-
-.divisionPedidos {
-  background-color: lightblue;
-  width: 600px;
-  height: 600px;
+  background-color: #41b3a3;
+     background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-dark.png");
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+    font-family: 'Montserrat';
+    font-size:22px;
+    font-weight: 10;
+   
+ }
+ /*Altera la altura del nav bar */
+ .navbarAlign{
+  height:10%;
+ }
+ /*Se encarga de manipular el titulo de Mama Mia */
+ .MMTitle{
+  justify-content:center;
+  display: flex;
+  
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 20px;
+  font-size: 25px;
+  /*padding:5% 40% 5% 70%;*/
+   margin:2.0 auto ;
+  
+ }
+ /* Cambia el color de todos los botones,le añade sombra, cambia tamaño de letra*/
+ .btn{
+  font-size:22px;
+  filter: drop-shadow(0 5px 10px #042c27);
+  background-color: #0c3a33;
+  }
+ /* Cambia el color de todos los botones al pasar el cursor por encima*/
+ .btn:hover{
+  background-color: #0c3a33;
+ }
+ .dropdown {
+  
+  display: inline-block;
+ }
+  
+ .dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+ }
+  
+ .dropdown:hover .dropdown-content {
+  display: block;
+ }
+ /* Cambia el color del botones para mostrar el carrito */
+ .verCarrito{
+ z-index:4;
+  background-color:#0c3a33;
+  border-radius:25px;
+  
+ }
+ .verCarrito:hover{
+  background-color:#091f1b;
+ }
+ /* posicion boton contenedor items individuales*/
+ .positionItemButton{
+    left:71%;
+    z-index:3;
+   /* margin:0% 0% 2% 0%;*/
+ }
+ /* posicion boton  Regresar de combos*/
+ .positionBackButton{
+        font-size:20px;
+        z-index:3;    
+        }
+ .positionBackButton:hover{
+    background-color:#091f1b; 
+  }
+   /*posicion boton  Siguiente de combos*/    
+ .positionNextButton{
+    font-size:22px;  
+    z-index:3;  
+ }
+ .positionNextButton:hover{
+      background-color:#091f1b; 
+        }
+  
+ /* posicion boton Checkout , color*/
+  .propertiesCheckoutButton {
+  font-size:22px;
+  background:grey;
+  
+   z-index:3;
+         }
+ .CheckoutButton {
+  font-size:22px;
+  background:grey;
+   z-index:3;
+                 }
+  /* posicion boton Checkout , color*/      
+ .checkout2{
+  background:#808080;
+  font-size:22px;
+  
+ } 
+ /* posicion fila que guarda el nombre de la estacion y la oferta mostrada*/
+ .station-offer-label{
+ color:white;
+ font-size:30px;
+ font-weight: bold 5px;
+ padding:2% 5%;
+  background-color:#0b463e;
+  border-radius:5px;
+ }
+ /*columna que contiene todas las opciones y la caja blanca de los combos/items*/
+ .custom-b-row{
+  position:relative;
+  height:65%;
+   background-color:#0b463e;
+  padding:2% 1%;
+  margin:-1% -20% ;
+  border-radius:5px;
+  
+ }
+ .custom-b-col{
+  position:relative;
+  background-color:#ffffff;
+  border-radius:5px;
+  
+ }
+ .paddingCheckBox{
+  
+  padding-right:200px;
+ }
+ .optionButton{
+  filter: drop-shadow(0 5px 10px #042c27);
+  border-width:30px;
+  padding: 0% 15%;
+  margin:20% 20%;
+  background-color:#0c3a33;
+  border-radius:25px;
+  
+ }
+ .optionButton:hover{
+ background-color:#091f1b; 
+ }
+ .optionButton2{
+  padding: -5% -10%;
+ }
+ .optionButton2:hover{
+  padding: -10% -20%;
+  background-color:#317051;
+ }
+ /*mueve el componente 5% a la derecha*/
+ .margin-left{
+ margin-left:5%;
+ }
+  
+ /* posicion lista de opciones con checkbox del contenedor blanco*/
+ .list1{
+ width:100%;
+  height:90%; 
   overflow: auto;
-}
-
-
-.moverSides_Drinks{
-position: absolute;
-top: 400px;
-left:200px;
-z-index: 0;
-font-size: 22px;
-}
+  }
+  
+ /* posicion lista dentro del contenedeor del carrito de compras*/
+ .list2{
+   max-height:16rem; 
+   overflow: auto;
+  
+ }
+ /* posicion campos dentro del formulario*/
+ .listForm{
+ height:60%; 
+ overflow: auto;
+ margin:0% auto 0% auto;
+ min-width:85%
+  
+ }
+  
+ /* pone invisible la division que contenga la clase .hideContainer*/
+ .hideContainer { display: none;}
+ /*++++++++++++++++++++++++ Propiedades Generales: barra de escrolear+++++++*/
+ ::-webkit-scrollbar {
+  width: 10px;
+ }
+ /* Scroll Bar*/
+ ::-webkit-scrollbar {
+  width: 15px;
+ }
+ /* Track */
+ ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  background: #e1e2e2;
+  border-radius: 5px;
+ }
+ /* Handle */
+ ::-webkit-scrollbar-thumb {
+  background: rgb(12, 134, 114);
+  border-radius: 5px;
+ }
+  
+ /* Handle on hover */
+ ::-webkit-scrollbar-thumb:hover {
+  background: rgb(9, 95, 84);}
+  
+  .redButton{
+    background-color:rgb(97, 22, 22);
+  }
+ 
+ 

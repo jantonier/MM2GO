@@ -1,11 +1,19 @@
+var url =  'http://mm2go.us-east-1.elasticbeanstalk.com'
+
 var login = new Vue({
     el: "#login",
     data:{
-        users: [
-                {email: "clopezzayas15@gmail.com", password: "Capstone2020!", role: 1},
-                {email: "lisa.ramirez@upr.edu", password: "Latorre7!", role: 0 },
-                {email: "jimmy.torres@upr.edu", password: "camelCase123$", role: 0}
-        ]
+        email: '',
+        password: ''
+    },
+
+    computed : {
+        validateEmail : function(){
+            if(this.email === '')
+                return null
+            else    
+                return/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)
+        }
     },
 
     mounted : function(){
@@ -24,6 +32,7 @@ var login = new Vue({
             if (email === "" || password === ""|| /\s+/.test(email) || /\s+/.test(password)){
                 document.getElementById("error").style.visibility = "visible"
                 document.getElementById("error").innerHTML = "Login Inválido. No debe dejar campos vacíos."
+
                 return;
             }
 
@@ -33,32 +42,25 @@ var login = new Vue({
                 document.getElementById("error").innerHTML = "Login Inválido. Ingrese un email válido."
 
             }
-             /* tests 3 and 4 will be in charge of backend */
-
-            // 3. User is not in the server  -- ELIMINATE and Merge with 4. 
-            else if(!this.isAUser(email)){
-                document.getElementById("error").style.visibility = "visible"
-                document.getElementById("error").innerHTML = "Login Inválido. No existe administrator asociado con el email ingresado."
-                return;
-            }
-
-            //4. Invalid credentials -- Test both email and password
-            else if(password !== this.getUserPassword(email)){
-                document.getElementById("error").style.visibility = "visible"
-                document.getElementById("error").innerHTML = "Login Inválido. Credenciales Inválidos."
-                return;
-            }
-            
+             // Send credentials to database for validation 
             else{
-                document.getElementById("error").style.visibility = "none";
-                document.getElementById("email").value = ""
-                document.getElementById("password").value = ""
+                var json = {
+                    administrator_email: email,
+                    administrator_password: password 
+                }
 
-                localStorage.setItem("log", true);
-                localStorage.setItem("role", this.getUser(email).role)
-                
-                window.location.href = "./dashboard.html"
-            }
+                axios.post(url + '/dashboard/login', json).then((response) =>
+                {
+                    document.getElementById("error").style.display = "none" // todo: fix space after removal
+                    localStorage.setItem("session-token", response.data.access_token)
+                    localStorage.setItem("role", response.data.role)
+                    window.location.href = "./dashboard.html"
+                }).catch((error) => {
+                    console.log(error)
+                    document.getElementById("error").style.visibility = "visible"
+                    document.getElementById("error").innerHTML = "Login Inválido. Credenciales Inválidos."
+                    });
+             }
         },
 
         isAUser: function(user){
@@ -90,8 +92,21 @@ var login = new Vue({
 
             return null
         },
-    }
-})
+        recoverPassword: function(){
+            // todo input validations and empty fields
+            var email = document.getElementById("recovery-email").value
+
+            var json = {
+                administrator_email : email
+            }
+
+            console.log(json)
+
+            axios.post(url + '/forgotpassword', json).then((response) => {
+                console.log(response)
+            })
+        }
+    }})
 
 document.addEventListener('keyup',(e) => {
     if(e.code === "Enter")

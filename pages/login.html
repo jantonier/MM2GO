@@ -2,25 +2,47 @@
     <head>
         <title>Login</title>
         <meta charset="UTF-8"> 
+   
+        <!--Montserrat font dependency-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+        <!--Axios dependency (for HTTP requests)-->
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+
+        <!--Vue dependency-->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- Bootstrap Vue dependencies-->
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+        <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+        <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
+
         <link href = "../css/login.css" rel = "stylesheet">
+
     </head>
-    <div id ="full-page">
-        <header>
-            <img src="../img/mm2go.png" alt="logo">
-        </header>
         <body>
-            <div class = "login-container">   
-                <div id = "login" class = "login-inner-container">
-                    <h1 class = "container-title">Login</h1>
-                    <ul>
+            <div id = "login">   
+                <div class = "login-container">
+                    <h1>Login</h1>
+                    <b-form class = "form">
                         <p id = "error"></p>
-                        <li><input type= "text" placeholder = "Email" id = "email"></li>
-                        <li><input type = "password" placeholder = "Contraseña" id = "password"></li>
-                        <button v-on:click = "validateLogin">Login</button>
-                    </ul>
+                        <b-form-group class = "input"  label-for = "email">
+                            <b-form-input id = "email" placeholder = "Email" :state = "validateEmail" v-model = "email" aria-describedby="invalid-email-feedback"></b-form-input>
+                            <b-form-invalid-feedback id="invalid-email-feedback">
+                                Favor de entrar un email válido. 
+                              </b-form-invalid-feedback>
+                        </b-form-group>
+                        <b-form-group class = "input" label-for = "password">
+                            <b-form-input type = "password" id = "password" placeholder = "Contraseña" v-model = "password"></b-form-input>
+                        </b-form-group>
+                    </b-form>
+                    <b-button v-b-modal.password_recovery_id id = "password-recovery" href = "#">¿Olvidaste tu contraseña?</b-button>
+                    <b-modal id = "password_recovery_id" title="¿Olvidaste tu contraseña?" centered @ok = "recoverPassword">
+                        <b-form-input id = "recovery-email" placeholder = "Email"></b-form-input>
+                    </b-modal>
+                    <b-button pill id = "login-button" v-on:click = "validateLogin">Iniciar Sesión</b-button>
                 </div>
-            </div>
     </div>
     <script src = "../js/login.js"></script>
     </body>

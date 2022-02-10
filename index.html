@@ -1,9 +1,13 @@
 <!--Home page for MM2GO-->
 <html>
 <head>
-    <title>MM2GO</title>
-
+    <title>Mama Mia - Página Principal</title>
+    <meta charset = "utf-8">
+    <!--Montserrat font dependency-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+    <!--Axios dependency (for HTTP requests)-->
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 
      <!--Vue dependency-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -33,39 +37,49 @@
          <b-navbar variant = "light">
             <img src = "img/rg-food.png" class = "rg-logo">
             <h1 class = "mm">Mama Mia</h1>
-            <!-- <img src = "img/mm2go.png" class = "mm2go-logo"> -->
-            <b-button pill id = "dashboard-button">Dashboard</b-button>
+            <b-button pill id = "dashboard-button" v-on:click="redirect">Tablero</b-button>
         </b-navbar>
     </header>
     <br><br>
     
 <div id = "body-container">
-    <div class = "combo-container"> 
-    <h1>Combos del Día</h1>
-    <div id = "menu-list">
-        <b-table hover head-variant = "light"  :items="items"></b-table>
-    </div>
-    </div>
-    <b-button pill id = "order-button"><a href = "pages/ordering-system.html">Ordena Ahora</a></b-button>
-
     <div class = "subscribe-container">
+        <div id = "subscribes">
     <p>¿Desea recibir un email cuando se actualicen los combos del día?</p>
     
     <b-form class = "form">
-        <b-form-group id = "name" label = "Nombre:" label-for = "name">
-            <b-form-input id = "" placeholder = "Nombre"></b-form-input>
+        <b-form-group id = "name-form" label-for = "name">
+            <b-form-input v-model = "name" id = "name" placeholder = "Nombre" :state = "validateName" aria-describedby = "invalid-name-feedback"></b-form-input>
+            <b-form-invalid-feedback id="invalid-name-feedback">
+                Favor de entrar un nombre válido. 
+            </b-form-invalid-feedback>
         </b-form-group>
-        <b-form-group id = "last_name"  label = "Apellido:" label-for = "last_name">
-            <b-form-input id = "" placeholder = "Apellido"></b-form-input>
+        <b-form-group id = "last-name-form" label-for = "last_name">
+            <b-form-input v-model = "last_name" id = "last_name" placeholder = "Apellido" :state = "validateLastName" aria-describedby="invalid-last-name-feedback"></b-form-input>
+            <b-form-invalid-feedback id="invalid-last-name-feedback">
+                Favor de entrar un apellido válido. 
+              </b-form-invalid-feedback>
         </b-form-group>
-        <b-form-group id = "email"  label = "Email:" label-for = "email">
-            <b-form-input id = "" placeholder = "Email"></b-form-input>
+        <b-form-group id = "email-form" label-for = "email">
+            <b-form-input v-model = "email" id = "email" placeholder = "Email" :state = "validateEmail" aria-describedby="invalid-email-feedback"></b-form-input>
+            <b-form-invalid-feedback id="invalid-email-feedback">
+                Favor de entrar un email válido. 
+              </b-form-invalid-feedback>
         </b-form-group>
+        
     </b-form>
+    <b-button pill id = "subscribe-button" v-on:click="subscribeUser">Subscribir</b-button>
+    </div>
 </div>
 
+<div id = "combos">
+    <h1>Combos del Día</h1>
+    <div class = "menu-list">
+        <b-table hover head-variant = "light"  :items="items" :sticky-header="stickyHeader"></b-table>
+    </div>
+    <b-button pill id = "order-button" v-on:click="redirectToOrder">Ordena Ahora</b-button> 
+    </div>
 </div>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 

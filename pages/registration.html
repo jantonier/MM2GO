@@ -2,28 +2,73 @@
     <head>
         <title>Registración</title>
         <meta charset = "utf-8">
+
+        <!--Montserrat font dependency-->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+        <!--Axios dependency (for HTTP requests)-->
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+
+        <!--Vue dependency-->
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- Bootstrap Vue dependencies-->
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+        <script src="https://unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
+        <script src="https://unpkg.com/vue@latest/dist/vue.js"></script>
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.js"></script>
         <link href = "../css/registration.css" rel = "stylesheet"></href>
+        <script type='text/javascript'>
+            if(window.location.search === '')
+                location.replace('../index.html');
+        </script>
     </head>
 
-    <div id="full-page">
-    <header>
-        <img src="../img/mm2go.png" alt="logo">
-    </header>
     <body>
-        <div id = "register" class = 'registration-container'>
-            <div class="registration-inner-container" >
-            <h1 class="container-title" >Registrar</h1>
-            <div class="divider" ></div>
-            <ul >
-            <p id = "error"><strong></strong></p>
-            <li><input type = "text" placeholder = "Nombre" id = "name"></li>
-            <li><input type = "text" placeholder = "Apellido" id = "last-name"></li>
-            <li><input type = "text" placeholder = "Email" id = "email"></li>
-            <li><input type = "password" placeholder = "Contraseña" id = "password"></li>
-            <li><input type = "password" placeholder = "Confirmar Contraseña" id = "confirm-password"></li>
-             <button v-on:click = "validateRegistration">Regístrate</button>   
-        </ul>
+        <div id = "register">
+            <div class="registration-container">
+                <h1>Registración</h1>
+                <b-form class = "form">
+                    <b-form-group class = "input"  label-for = "name">
+                        <b-form-input id = "name" placeholder = "Nombre" v-model ="name" aria-describedby="invalid-name-feedback" :state = "validateName"></b-form-input>
+                        <b-form-invalid-feedback id="invalid-name-feedback">
+                            Favor de entrar un nombre válido.
+                          </b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group class = "input"  label-for = "last_name">
+                        <b-form-input id = "last_name" placeholder = "Apellido" v-model = "last_name" aria-describedby="invalid-last-name-feedback" :state = "validateLastName"></b-form-input>
+                        <b-form-invalid-feedback id="invalid-last-name-feedback">
+                            Favor de entrar un apellido válido. 
+                          </b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group class = "input"  label-for = "email">
+                        <b-form-input id = "email" placeholder = "Email" v-model = "email" aria-describedby="invalid-email-feedback" :state = "validateEmail"></b-form-input>
+                        <b-form-invalid-feedback id="invalid-email-feedback">
+                            Favor de entrar un email válido. 
+                          </b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group class = "input" label-for = "password">
+                        <b-form-input type = "password" id = "password" placeholder = "Contraseña" v-model = "password" aria-describedby="invalid-password-feedback invalid-matching-password-feedback" :state = "validatePassword"></b-form-input>
+                        <b-form-invalid-feedback id="invalid-password-feedback">
+                            Contraseña debe tener: <br>
+                                1. Entre 8 a 16 caracteres. <br>
+                                2. Al menos una letra minúscula. <br>
+                                3. Al menos una letra mayúscula. <br>
+                                4. Al menos un número <br>
+                                5. Al menos un caracter especial.
+                          </b-form-invalid-feedback>
+                        <b-form-invalid-feedback id="invalid-matching-password-feedback"> 
+                            Contraseñas no son iguales. 
+                        </b-form-invalid-feedback>
+                    </b-form-group>
+                    <b-form-group class = "input" label-for = "confirm_password">
+                        <b-form-input type = "password" id = "confirm_password" placeholder = "Confirmar Contraseña" v-model = "confirm_password" aria-describedby="invalid-matching-password-feedback" :state = "validateConfirmPassword"></b-form-input>
+                        <b-form-invalid-feedback id="invalid-matching-password-feedback">
+                            Contraseñas no son iguales. 
+                          </b-form-invalid-feedback>
+                    </b-form-group>
+                </b-form>
+                <b-button pill id = "register-button" v-on:click="registerAdmin">Registrar</b-button>   
         </div>
         </div>
         <script src = "../js/registration.js"></script>

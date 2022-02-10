@@ -1,103 +1,55 @@
 body{
-  margin: 0;
+    margin: 0;
+    background-color: #41b3a3;
+    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-dark.png");
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+    font-family: 'Montserrat';
 }
 
-header{
-  height: 20vh;
-}
-
-#full-page{
-  background-image: radial-gradient(#50808E, #50808E, #39616d);
-}
-
-header img{
-  width: 150px;
-  margin: 20px;
-  -webkit-filter: drop-shadow(3px 3px 3px #222);
-  filter:  drop-shadow(0px 0px 5px #222);
-}
-
-.container-title{
-  color:#fff;
-  text-align: center;
-  text-transform: uppercase;
-  font-weight: bolder;
-  font-size:45px;
-  letter-spacing: 5px;
-  background-color:#071E22;
-  margin:0;
-  height: 100px;
-  line-height: 100px;
-  font-weight: normal;
-}
-
-input{
+.registration-container{
+  background-color: #d8dee4;
+  color: #0c3a33;
+  padding: 20px;
+  width: 40%;
   border-radius: 5px;
-  border: 1px solid #696969;
-  margin: 25px auto;
-  width: 300px;
-  box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.3 );
-  display: block;
-  font-size:15px;
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 10px;
-}
-
-.registration-inner-container ul{
-  list-style: none;
-  padding: 0 0 20px 0 ;
-}
-
-.registration-inner-container{
-  background-color:rgb(255, 255, 255, 0.7);
-  width: 500px;
-  overflow: hidden;
   position: absolute;
   top:50%;
   left:50%;
   transform: translate(-50%, -50%);
-  border-radius: 20px;
-  box-shadow: 0px 0px 10px rgb(0, 0, 0, 0.3 );
 }
 
-.registration-container{
-  padding: 0px 0;
-  width:100% ;
-  height:80vh;
-}
-
-/* .divider{
-  width: 1000px;
-  height: 1px;
-  background-color: #fff;
-} */
-
-button{
-  width: 300px;
-  height: 50px;
-  border-radius: 30px;
-  background-color: rgb(80, 128, 142, 0);
-  color:#071E22;
-  margin: 45px auto 0 auto  ;
-  display: block;
-  border: 2px solid #071E22;
-  font-size:25px;
+.registration-container h1{
   text-transform: uppercase;
-  letter-spacing: 2px;
-  transition:0.2s
+  letter-spacing: 5px;
+  padding: 10px;
+  text-align: center;
 }
 
-button:hover{
-background-color:#071E22;
-border: 2px solid #071E22;
-color:white;
+.form-group{
+  padding: 10px;
 }
 
-#error {
-  visibility: none; 
-  text-align: center; 
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bolder; 
-  color: red; 
+#register-button{
+  position: relative;
+  margin: auto;
+  text-align: center;
+  background-color: #0c3a33;
+  color: #d8dee4;
+  font-size: 22px;
+  filter: drop-shadow(0 5px 10px #042c27);
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  transform: translate(-1%, 0);
 }
+
+#register-button:hover{
+  background-color:  #051b18;
+}
+
+#password-help-block{
+  color: white !important;
+}
+
+
+
